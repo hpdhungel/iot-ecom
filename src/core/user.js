@@ -10,21 +10,6 @@ const options = {
 
 
 
-async function getUsersAsync() {
-    try {
-
-        client.connect()
-        const data = await client.query(`SELECT * FROM ${TABLE_NAME.users}`)
-        client.end()
-        return data.rows
-    }
-    catch (err) {
-        throw err
-    }
-
-}
-
-
 function getUsers( cb ) {
     const client = new Client(options)
     client.connect()
@@ -35,6 +20,6 @@ function getUsers( cb ) {
     })
 }
 module.exports = {
-    getUsers, getUsersAsync
+    getUsers
     
 }
