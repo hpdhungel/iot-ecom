@@ -10,10 +10,10 @@ const options = {
 }
 const client = new Client(options)
 
-async function getAllUsers() {
+async function getAllLists() {
     try {
         client.connect()
-        const data = await client.query(`SELECT * FROM ${TABLE_NAME.users}`)
+        const data = await client.query(`SELECT * FROM ${TABLE_NAME.lists}`)
         client.end()
         return data.rows
     }
@@ -23,12 +23,12 @@ async function getAllUsers() {
 
 }
 
-async function createUser(resp, req) {
+async function createList(resp, req) {
     try {
         client.connect()
         const data = {
-            text: 'INSERT INTO users(name, password, email, street, city, state, zip) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
-            values: [req.name, req.password, req.email, req.street, req.city, req.state, req.zip]
+            text: 'INSERT INTO lists(name, description, price, quantity) VALUES($1, $2, $3, $4) RETURNING *;',
+            values: [req.name, req.description, req.price, req.quantity]
         }
         client.query(data, (err, res) => {
             if (err) {
@@ -42,12 +42,12 @@ async function createUser(resp, req) {
     }
 }
 
-async function updateUser(resp, req) {
+async function updateList(resp, req) {
     try {
         client.connect()
         const data = {
-            text: 'UPDATE users SET name=$1, password=$2, email=$3, street=$4, city=$5, state=$6, zip=$7 WHERE id=$8 RETURNING *;',
-            values: [req.name, req.password, req.email, req.street, req.city, req.state, req.zip, req.id]
+            text: 'UPDATE lists SET name=$1, description=$2, price=$3, quantity=$4 WHERE id=$5 RETURNING *;',
+            values: [req.name, req.description, req.price, req.quantity, req.id]
         }
         client.query(data, (err, res) => {
             if (err) {
@@ -62,7 +62,7 @@ async function updateUser(resp, req) {
 }
 
 module.exports = {
-    getAllUsers,
-    createUser,
-    updateUser
+    getAllLists,
+    createList,
+    updateList
 }

@@ -17,3 +17,11 @@ VALUES
  ('john', 'password', 'john@example.com', '3211 Main St', 'Harrisburg', 'PA', '17109');
 
 
+CREATE TABLE IF NOT EXISTS items (
+    ID SERIAL PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    description VARCHAR(255),
+    price NUMERIC(6,2) NOT NULL
+    quantity NUMERIC(6) NOT NULL
+);
+
