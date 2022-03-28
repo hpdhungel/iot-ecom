@@ -1,10 +1,8 @@
 const express = require('express');
 require('dotenv').config()
-const getAllUsers = require('./src/routes/getAllUsers')
+const getAllUsers = require('./src/routes/users/getAllUsers')
 
 const app = express();
-
-
 
 app.get('/api/v1/users/', getAllUsers)
 

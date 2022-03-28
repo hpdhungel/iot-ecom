@@ -8,9 +8,7 @@ const options = {
     password: process.env.DB_PASSWORD
 }
 
-
-
-function getUsers( cb ) {
+function getAllUsers( cb ) {
     const client = new Client(options)
     client.connect()
     client.query("SELECT * from users", (err, res) => {
@@ -19,7 +17,9 @@ function getUsers( cb ) {
         cb(res.rows)
     })
 }
+
+
 module.exports = {
-    getUsers
+    getAllUsers
     
 }

@@ -1,7 +1,8 @@
-const { getUsers } = require('../core/user')
+const { getAllUsers } = require('../../core/user')
 
 module.exports =  (req , res) => {
-    const users =  getUsers()
+    const users =  getAllUsers()
     console.log(users)
     res.status(200).send({message: users})
 }
+
