@@ -2,7 +2,6 @@ require('dotenv').config()
 const { Client } = require('pg')
 const { TABLE_NAME } = require('../constants/constants')
 
-
 const options = {
     port: process.env.DB_PORT,
     user: process.env.DB_USER,

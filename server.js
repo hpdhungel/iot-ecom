@@ -4,7 +4,10 @@ require('dotenv').config()
 const getAllUsers = require('./src/routes/users/getAllUsers')
 const createUser = require('./src/routes/users/createUser');
 const updateUser = require('./src/routes/users/updateUser');
-const updateList = require('./src/')
+const getAllLists = require('./src/routes/lists/getAllLists');
+const createList = require('./src/routes/lists/createList');
+const updateList = require('./src/routes/lists/updateList');
+
 const app = express();
 
 app.get('/api/v1/users/', getAllUsers)
