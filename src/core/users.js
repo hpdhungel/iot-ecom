@@ -1,7 +1,6 @@
 require('dotenv').config()
 const { Client } = require('pg')
 const { TABLE_NAME } = require('../constants/constants')
-const bodyParser = require('body-parser')
 
 
 const options = {
@@ -90,11 +89,6 @@ function loginUser(resp, req) {
     });
 
 }
-
-
-
-
-
 
 module.exports = {
     getAllUsers,
