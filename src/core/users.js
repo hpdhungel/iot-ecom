@@ -43,7 +43,28 @@ async function createUser(resp, req) {
     }
 }
 
-async function updateUser(resp, req) {
+
+async function updateUser(req, resp )  {
+
+  
+
+    try {
+         client.connect();          // gets connection
+        await client.query('UPDATE users SET name=$1, password=$2, email=$3, street=$4, city=$5, state=$6, zip=$7 WHERE id=$8 RETURNING *;', [req.name, req.password, req.email, req.street, req.city, req.state, req.zip, req.id], (data)=>{
+            return data
+            console.log(data)
+        });
+        return;
+        
+    } catch (error) {
+        console.error(error.stack);
+        return false;
+    } finally {
+        await client.end();              // closes connection
+    }
+};
+
+async function updateUser1(resp, req) {
     try {
         client.connect()
         const data = {

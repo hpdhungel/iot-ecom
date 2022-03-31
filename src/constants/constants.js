@@ -1,5 +1,6 @@
 const TABLE_NAME = {
-    users: 'users'
+    users: 'users',
+    lists: 'lists'
 }
 module.exports = {
     TABLE_NAME
