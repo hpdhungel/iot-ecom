@@ -10,5 +10,16 @@ import { environment } from 'src/environments/environment';
 export class LoginService {
 backendUrl = environment.backendApi
 
+
+
+  constructor(private http: HttpClient) { }
+
+
+  login(user : any): Observable<any>{
+    return this.http.post(`${this.backendUrl}/api/login`, user);
+  }
+
+
+
 }
 

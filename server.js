@@ -19,7 +19,7 @@ app.use(cors());
 app.get('/api/v1/users/', getAllUsers)
 app.post('/api/v1/users', createUser);
 app.put('/api/v1/users', updateUser);
-app.post('/api/v1/users', loginUser);
+app.post('/api/v1/login', loginUser);
 
 app.get('/api/v1/lists', getAllLists)
 app.post('/api/v1/list', createList);

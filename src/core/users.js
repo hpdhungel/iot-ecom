@@ -43,28 +43,7 @@ async function createUser(resp, req) {
     }
 }
 
-
-async function updateUser(req, resp )  {
-
-  
-
-    try {
-         client.connect();          // gets connection
-        await client.query('UPDATE users SET name=$1, password=$2, email=$3, street=$4, city=$5, state=$6, zip=$7 WHERE id=$8 RETURNING *;', [req.name, req.password, req.email, req.street, req.city, req.state, req.zip, req.id], (data)=>{
-            return data
-            console.log(data)
-        });
-        return;
-        
-    } catch (error) {
-        console.error(error.stack);
-        return false;
-    } finally {
-        await client.end();              // closes connection
-    }
-};
-
-async function updateUser1(resp, req) {
+async function updateUser(resp, req) {
     try {
         client.connect()
         const data = {
@@ -83,8 +62,45 @@ async function updateUser1(resp, req) {
     }
 }
 
+
+
+async function loginUser(resp, req) {
+    const client = new Client(options);
+    client.connect(err => {
+        if (err) {
+            console.log('error connecting', err.stack);
+        } else {
+
+            const data = {
+                text: 'SELECT email, password FROM users WHERE email = $1',
+                values: [req.email]
+            }
+
+            client.query(data, (err, res) => {
+                if (err) {
+                    throw err;
+                }
+                if (res.rows[0] != null || req.password === user.password) {
+                        resp(true);
+                } else {
+                    resp(false);
+                }
+
+                client.end((err)=> {throw err});
+            });
+        }
+    });
+
+}
+
+
+
+
+
+
 module.exports = {
     getAllUsers,
     createUser,
-    updateUser
+    updateUser,
+    loginUser
 }

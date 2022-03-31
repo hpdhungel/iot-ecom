@@ -1,8 +1,15 @@
 const { loginUser } = require('../../core/users');
 
 module.exports = async (req, res) => {
-    loginUser(data => {
-        res.status(200).send({user: data})
-    }, req.body)
+
+    try {
+        loginUser(data => {
+            res.status(200).send({user: data})
+        }, req.body)
+        
+    } catch (error) {
+        console.log(error)
+    }
+   
 }
 
