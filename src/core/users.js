@@ -62,9 +62,7 @@ async function updateUser(resp, req) {
     }
 }
 
-
-
-async function loginUser(resp, req) {
+function loginUser(resp, req) {
     const client = new Client(options);
     client.connect(err => {
         if (err) {
@@ -72,7 +70,7 @@ async function loginUser(resp, req) {
         } else {
 
             const data = {
-                text: 'SELECT email, password FROM users WHERE email = $1',
+                text: 'SELECT * FROM users WHERE email = $1',
                 values: [req.email]
             }
 
@@ -81,12 +79,13 @@ async function loginUser(resp, req) {
                     throw err;
                 }
                 if (res.rows[0] != null || req.password === user.password) {
-                        resp(true);
+                    resp(res);
                 } else {
                     resp(false);
                 }
-
                 client.end((err)=> {throw err});
+                console.log(res)
+
             });
         }
     });
