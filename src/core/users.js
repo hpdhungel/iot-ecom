@@ -68,9 +68,9 @@ function loginUser(resp, req) {
         if (err) {
             console.log('error connecting', err.stack);
         } else {
-
+           
             const data = {
-                text: 'SELECT * FROM users WHERE email = $1',
+                text: 'SELECT name, password, email, street, city, state, zip FROM users WHERE email = $1',
                 values: [req.email]
             }
 
@@ -79,12 +79,11 @@ function loginUser(resp, req) {
                     throw err;
                 }
                 if (res.rows[0] != null || req.password === user.password) {
-                    resp(res);
+                    resp(res.rows);
                 } else {
                     resp(false);
                 }
                 client.end((err)=> {throw err});
-                console.log(res)
 
             });
         }
