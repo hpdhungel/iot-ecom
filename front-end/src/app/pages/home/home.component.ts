@@ -12,4 +12,12 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout(){
+    localStorage.removeItem("User");
+    var user = window.localStorage.getItem('User');
+    if (user==null){
+      console.log('success')
+    }
+  }
+
 }
