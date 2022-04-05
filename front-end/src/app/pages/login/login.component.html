@@ -2,19 +2,20 @@
 
 
     <p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}" >
-
         <span class="p-float-label">
-            <input id="float-input" type="text" pInputText [(ngModel)]="email"> 
+
+            <input id="float-input" type="text" pInputText placeholder="Email" [formControl]="email"> 
             <label for="float-input">Email</label>
         </span>
         <br/>
         <span class="p-float-label">
-            <input id="float-input" type="text" pInputText [(ngModel)]="password"> 
+            <input id="float-input" type="text" pInputText placeholder="Password" [formControl]="password"> 
+
             <label for="float-input">Password</label>
         </span>
         
     <br/>
-        <button pButton type="button" (click)="onSubmit()" label="Login"class="p-button-help"></button>
+        <button pButton type="button" (click)="login()" label="Login"class="p-button-help"></button>
     
     </p-card>
     

@@ -12,6 +12,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { HttpClientModule} from '@angular/common/http';
+import { SignupComponent } from './pages/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { FooterComponent } from './shared/footer/footer.component';
     LoginComponent,
     HomeComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,8 @@ import { FooterComponent } from './shared/footer/footer.component';
     ReactiveFormsModule,
     ButtonModule,
     CardModule,
-    InputTextModule
+    InputTextModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

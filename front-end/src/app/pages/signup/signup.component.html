@@ -1,0 +1,42 @@
+<p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}" >
+    <span class="p-float-label">
+
+        <input id="float-input" type="text" pInputText placeholder="Name" [formControl]="name"> 
+        <label for="float-input">Name</label>
+    </span>
+    <span class="p-float-label">
+
+        <input id="float-input" type="text" pInputText placeholder="Email" [formControl]="email"> 
+        <label for="float-input">Email</label>
+    </span>
+    <span class="p-float-label">
+
+        <input id="float-input" type="text" pInputText placeholder="Password" [formControl]="password"> 
+        <label for="float-input">Password</label>
+    </span>
+    <br/>
+    <span class="p-float-label">
+
+        <input id="float-input" type="text" pInputText placeholder="Street" [formControl]="street"> 
+        <label for="float-input">Street</label>
+    </span>
+    
+    <span class="p-float-label">
+        <input id="float-input" type="text" pInputText placeholder="City" [formControl]="city"> 
+
+        <label for="float-input">City</label>
+    </span>
+    <span class="p-float-label">
+        <input id="float-input" type="text" pInputText placeholder="State" [formControl]="state"> 
+
+        <label for="float-input">State</label>
+    </span>
+    <span class="p-float-label">
+        <input id="float-input" type="text" pInputText placeholder="Zip" [formControl]="zip"> 
+
+        <label for="float-input">Zip</label>
+    </span>
+<br/>
+    <button pButton type="button" (click)="signup()" label="Sign Up"class="p-button-help"></button>
+
+</p-card>

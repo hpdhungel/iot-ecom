@@ -37,6 +37,7 @@ async function createUser(resp, req) {
             resp(res.rows);
         });
     }
+    
     catch (err) {
         console.log(err)
     }
@@ -77,13 +78,12 @@ function loginUser(resp, req) {
                 if (err) {
                     throw err;
                 }
-                if (res.rows[0] != null || req.password === user.password) {
+                if (res.rows[0] != null && req.password === res.rows[0].password ) {
                     resp(res.rows);
+            
                 } else {
-                    resp(false);
+                    resp(false)
                 }
-                client.end((err)=> {throw err});
-
             });
         }
     });

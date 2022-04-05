@@ -14,7 +14,8 @@ const updateList = require('./src/routes/lists/updateList');
 
 const app = express();
 app.use(bodyparser.json());
-app.use(cors());
+app.use(cors())
+
 
 app.get('/api/v1/users/', getAllUsers)
 app.post('/api/v1/users', createUser);
