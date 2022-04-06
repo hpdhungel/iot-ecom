@@ -21,7 +21,14 @@ CREATE TABLE IF NOT EXISTS products (
     ID SERIAL PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
-    price NUMERIC(6,2) NOT NULL
+    price NUMERIC(6,2) NOT NULL,
     quantity NUMERIC(6) NOT NULL
 );
+
+
+INSERT INTO products (name, description, price, quantity) 
+VALUES 
+('Inspiron 15 Laptop', 'The latest 11th Generation Intel® Core™ processors deliver incredible', 10.00, 10),
+('Macbook 16"', 'The latest 11th Generation Intel® Core™ processors deliver incredible', 10.00, 10)
+
 
