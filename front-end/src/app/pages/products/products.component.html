@@ -1,0 +1,56 @@
+<app-navbar></app-navbar>
+<button pButton type="button" (click)="showForm()" label="Add Product" class="p-button-help"></button>
+
+
+
+<div *ngIf="showProductForm">
+
+    <p-card class='showForm()' [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
+
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText placeholder="Title" [formControl]="name">
+            <label for="float-input">Title</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+
+            <input id="float-input" type="text" pInputText placeholder="Description" [formControl]="description">
+            <label for="float-input">Description</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+
+            <input id="float-input" type="text" pInputText placeholder="Price" [formControl]="description">
+            <label for="float-input">Price</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+
+            <input id="float-input" type="text" pInputText placeholder="Quantity" [formControl]="quantity">
+            <label for="float-input">Quantity</label>
+        </span>
+        <br />
+
+        <button pButton type="button" (click)="addProduct()" label="Create" class="p-button-help"></button>
+
+    </p-card>
+
+</div>
+
+
+
+<ul *ngFor="let product of products.product">
+    <div class="p-col-12">
+        <p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
+            <div class="col">
+                <div>{{product.name}}</div>
+                <div>{{product.description}}</div>
+            </div>
+            <div>
+                <span class="product-price">${{product.price}}</span>
+            </div>
+            <p-button icon="pi pi-shopping-cart"></p-button>
+
+        </p-card>
+    </div>
+</ul>

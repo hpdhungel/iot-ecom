@@ -1,21 +1,22 @@
+<app-navbar></app-navbar>
 
+<p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
+    <ng-template pTemplate="header">
+        Login
+    </ng-template>
+    <span class="p-float-label">
 
+        <input id="float-input" type="text" pInputText placeholder="Email" [formControl]="email">
+        <label for="float-input">Email</label>
+    </span>
+    <br />
+    <span class="p-float-label">
+        <input id="float-input" type="password" pInputText placeholder="Password" [formControl]="password">
 
-    <p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}" >
-        <span class="p-float-label">
+        <label for="float-input">Password</label>
+    </span>
 
-            <input id="float-input" type="text" pInputText placeholder="Email" [formControl]="email"> 
-            <label for="float-input">Email</label>
-        </span>
-        <br/>
-        <span class="p-float-label">
-            <input id="float-input" type="text" pInputText placeholder="Password" [formControl]="password"> 
+    <br />
+    <button pButton type="button" (click)="login()" label="Login" class="p-button-help"></button>
 
-            <label for="float-input">Password</label>
-        </span>
-        
-    <br/>
-        <button pButton type="button" (click)="login()" label="Login"class="p-button-help"></button>
-    
-    </p-card>
-    
+</p-card>

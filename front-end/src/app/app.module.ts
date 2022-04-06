@@ -14,6 +14,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HttpClientModule} from '@angular/common/http';
 import { SignupComponent } from './pages/signup/signup.component';
+import { ProductsComponent } from './pages/products/products.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SignupComponent } from './pages/signup/signup.component';
     HomeComponent,
     NavbarComponent,
     FooterComponent,
-    SignupComponent
+    SignupComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,

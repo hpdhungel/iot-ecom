@@ -20,7 +20,6 @@ async function getAllUsers() {
     catch (err) {
         throw err
     }
-
 }
 
 async function createUser(resp, req) {
