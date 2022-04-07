@@ -1,8 +1,5 @@
 <app-navbar></app-navbar>
 <button pButton type="button" (click)="showForm()" label="Add Product" class="p-button-help"></button>
-
-
-
 <div *ngIf="showProductForm">
 
     <p-card class='showForm()' [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
@@ -20,7 +17,7 @@
         <br />
         <span class="p-float-label">
 
-            <input id="float-input" type="text" pInputText placeholder="Price" [formControl]="description">
+            <input id="float-input" type="text" pInputText placeholder="Price" [formControl]="price">
             <label for="float-input">Price</label>
         </span>
         <br />
@@ -48,8 +45,15 @@
             </div>
             <div>
                 <span class="product-price">${{product.price}}</span>
+                <br/>
+                <span class="product-price">{{product.quantity}}</span>
+
+                <br/>
+                <span class="product-price">ID{{product.id}}</span>
+
             </div>
             <p-button icon="pi pi-shopping-cart"></p-button>
+            <p-button icon="pi pi-trash"  (click)="deleteProduct(product.id)" ></p-button>
 
         </p-card>
     </div>

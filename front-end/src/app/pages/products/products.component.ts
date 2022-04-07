@@ -15,27 +15,50 @@ export class ProductsComponent implements OnInit {
   description = new FormControl("");
   price = new FormControl("")
   quantity = new FormControl("")
+  id = new FormControl("")
 
   showProductForm:boolean = false;
-
 
   ngOnInit() {
     this.getProduct()
   }
-  addProduct() {
-    this.productService.createProduct(this.name.value, this.description.value, this.price.value, this.quantity.value ).subscribe(data => {
-      data
-      console.log(data)
-    })
-  }
+
   getProduct(){
     this.productService.getProducts().subscribe(data => {
       this.products = data
+      console.log(this.products)
     })
   }
-  showForm(){
-    console.log(this.showProductForm)
 
+  async addProduct() {
+    this.productService.createProduct(this.name.value, this.description.value, this.price.value, this.quantity.value ).subscribe(data => {
+        console.log(data)
+      
+        this.showProductForm = false
+      
+    
+    })
+    this.getProduct()
+
+  }
+
+  updateProduct() {
+    this.productService.updateProduct(this.name.value, this.description.value, this.price.value, this.quantity.value, this.id.value).subscribe(data => {
+     if (data>0){
+      this.addProduct()  
+    }    
+      this.showProductForm = false
+    })
+  }
+
+  deleteProduct(id) {
+    this.productService.deleteProduct(id).subscribe((data) => {
+     this.getProduct(),
+     console.log(data)
+    })
+  }
+  
+  showForm(){
     this.showProductForm = !this.showProductForm
   }
 }
