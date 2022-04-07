@@ -7,8 +7,6 @@ const options = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD
 }
-const client = new Client(options);
-
 
 function getAllProducts(list) {
     const client = new Client(options);
@@ -22,23 +20,27 @@ function getAllProducts(list) {
                 }
                 list(res.rows);
                 client.end(err => {
-                   
-                        console.log('client  disconnect successful')
-                    
+                    if(err){
+                        console.log('unable to close the connection' + err)
+                    }
+                    console.log('client  disconnect successful from getAllProduct')    
                 })
             })
         }
     })
 }
 
-
 async function createNewProduct(callback, req) {
+const client = new Client(options);
+
+    let price = parseInt(req.price);
+    let quantity = parseInt(req.quantity);
 
     try {
         client.connect()
         const data = {
             text: 'INSERT INTO products(name, description, price, quantity) VALUES($1, $2, $3, $4) RETURNING *;',
-            values: [req.name, req.description, req.price, req.quantity]
+            values: [req.name, req.description, price, quantity]
         }
         client.query(data, (err, res) => {
             if (err) {
@@ -52,7 +54,58 @@ async function createNewProduct(callback, req) {
             })
         });
     }
-    
+    catch (err) {
+        console.log(err)
+    }
+}
+
+async function deleteProduct(callback, req) {
+    const client = new Client(options);
+    let productId = parseInt(req.id);
+    try {
+        client.connect()
+        const data = {
+            text: 'DELETE FROM products WHERE id=$1 RETURNING *;',
+            values: [productId]
+            
+        }
+        client.query(data, (err, res) => {
+            if (err) {
+                throw err;
+            }
+            callback(res.rows);
+            client.end(err=>{
+                if(err){
+                    console.log(err)
+                }
+            })
+        });
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
+async function updateProduct(callback, req) {
+    const client = new Client(options);
+    try {
+        client.connect()
+        const data = {
+            text: 'UPDATE products SET name=$1, description=$2, price=$3, quantity=$4) VALUES($1, $2, $3, $4) RETURNING *;',
+            values: [req.name, req.description, price, quantity]
+        }
+        client.query(data, (err, res) => {
+            if (err) {
+                throw err;
+            }
+            callback(res.rows);
+            client.end(err=>{
+                if(err){
+                    console.log(err)
+                }
+            })
+        });
+    }
     catch (err) {
         console.log(err)
     }
@@ -61,5 +114,7 @@ async function createNewProduct(callback, req) {
 
 module.exports = {
   getAllProducts,
-  createNewProduct
+  createNewProduct,
+  updateProduct,
+  deleteProduct
 }
