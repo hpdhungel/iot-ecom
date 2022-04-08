@@ -25,6 +25,17 @@ CREATE TABLE IF NOT EXISTS products (
     quantity NUMERIC(6) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS carts (
+  ID SERIAL PRIMARY KEY,
+  CONSREAINT fk_user
+    FOREIGN KEY(user_id)
+      REFRENCES users(id)
+  CONSREAINT fk_product
+    FOREIGN KEY(id)
+      REFRENCES users(id)
+)
+ 
+
 
 INSERT INTO products (name, description, price, quantity) 
 VALUES 
@@ -32,3 +43,9 @@ VALUES
 ('Macbook 16"', 'The latest 11th Generation Intel® Core™ processors deliver incredible', 10.00, 10)
 
 
+CREATE TABLE IF NOT EXISTS carts (
+  ID SERIAL PRIMARY KEY,
+  user_id bigint references users(id),
+  product_id bigint references products(id)
+)
+ 

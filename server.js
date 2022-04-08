@@ -13,10 +13,12 @@ const createNewProduct = require('./src/routes/products/addProduct');
 const deleteProduct = require('./src/routes/products/deleteProduct');
 const updateProduct = require('./src/routes/products/updateProduct');
 
+const addToCart = require('./src/routes/cart/addToCart');
+const getAllFromCart = require('./src/routes/cart/getAllFromCart');
+
 const app = express();
 app.use(bodyparser.json());
 app.use(cors())
-
 
 app.get('/api/v1/users/', getAllUsers)
 app.post('/api/v1/users', createUser);
@@ -27,6 +29,9 @@ app.get('/api/v1/products', getAllProducts)
 app.post('/api/v1/product', createNewProduct);
 app.post('/api/v1/delete-product', deleteProduct);
 app.post('/api/v1/product', updateProduct);
+
+app.post('/api/v1/cart', addToCart);
+app.get('/api/v1/carts', getAllFromCart)
 
 app.listen(process.env.PORT, () => console.log(`server has started ${process.env.PORT}`))
 
