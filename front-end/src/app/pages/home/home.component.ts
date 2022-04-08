@@ -11,6 +11,20 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.hideLogout()
+
+  }
+
+  logoutButton:boolean = true;
+
+  hideLogout(){
+    var user = window.localStorage.getItem('User');
+    if (user==null){
+      this.logoutButton= false
+    } else {
+      this.logoutButton= true
+
+    }
   }
 
   logout(){
@@ -18,6 +32,7 @@ export class HomeComponent implements OnInit {
     var user = window.localStorage.getItem('User');
     if (user==null){
       console.log('success')
+      this.hideLogout()
     }
   }
 

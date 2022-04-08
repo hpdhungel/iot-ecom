@@ -15,6 +15,13 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { HttpClientModule} from '@angular/common/http';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ProductsComponent } from './pages/products/products.component';
+import { MessagesModule } from 'primeng/messages';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogModule } from 'primeng/dialog';
+
+
 
 @NgModule({
   declarations: [
@@ -24,7 +31,8 @@ import { ProductsComponent } from './pages/products/products.component';
     NavbarComponent,
     FooterComponent,
     SignupComponent,
-    ProductsComponent
+    ProductsComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -34,9 +42,14 @@ import { ProductsComponent } from './pages/products/products.component';
     ButtonModule,
     CardModule,
     InputTextModule,
-    HttpClientModule
+    HttpClientModule,
+    MessagesModule,
+    ConfirmDialogModule, 
+    BrowserAnimationsModule,
+    DialogModule
+    
   ],
-  providers: [],
+  providers: [ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
