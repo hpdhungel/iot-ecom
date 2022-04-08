@@ -1,4 +1,6 @@
 <app-navbar></app-navbar>
+<p-messages [value]="msgs"></p-messages>
+
 <button pButton type="button" (click)="showForm()" label="Add Product" class="p-button-help"></button>
 <div *ngIf="showProductForm">
 
@@ -35,7 +37,6 @@
 </div>
 
 
-
 <ul *ngFor="let product of products.product">
     <div class="p-col-12">
         <p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
@@ -53,8 +54,17 @@
 
             </div>
             <p-button icon="pi pi-shopping-cart"></p-button>
+            <p-button icon="pi pi-pencil"  (click)="showForm()" ></p-button>
+
             <p-button icon="pi pi-trash"  (click)="deleteProduct(product.id)" ></p-button>
 
         </p-card>
     </div>
 </ul>
+
+<p-dialog header={{messageTitle}} [(visible)]="createProductModel" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <p>{{message}}</p>
+   
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
