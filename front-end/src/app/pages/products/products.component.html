@@ -53,7 +53,7 @@
                 <span class="product-price">ID{{product.id}}</span>
 
             </div>
-            <p-button icon="pi pi-shopping-cart"></p-button>
+            <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.id)"></p-button>
             <p-button icon="pi pi-pencil"  (click)="showForm()" ></p-button>
 
             <p-button icon="pi pi-trash"  (click)="deleteProduct(product.id)" ></p-button>

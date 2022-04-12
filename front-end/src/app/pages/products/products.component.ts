@@ -26,6 +26,7 @@ export class ProductsComponent implements OnInit {
   deleteStatus: any
   messageTitle: any
   message: any
+  
 
   ngOnInit() {
     this.getAllProduct()
@@ -50,14 +51,31 @@ export class ProductsComponent implements OnInit {
     this.messageTitle = title
   }
 
+  addToCart(productId){
+    let data = JSON.parse(window.localStorage.getItem('User'))
+    this.productService.addToCart(productId, data.id).subscribe(() => {
+      this.wait(1)
+      this.messageModel("success", "success")
+      this.ngOnInit()
+      this.showProductForm = false
+      console.log("success")
+    },
+    (error) => {
+      this.wait(1)
+      this.messageModel(error.name, error.statusText)
+    })
+  }
+
   getAllProduct() {
     this.productService.getProducts().subscribe((data) => {
+      
       this.products = data
     },
     (error) => {
       this.messageModel(error.name, error.statusText)
     })
   }
+  
 
   addProduct() {
     this.productService.createProduct(this.name.value, this.description.value, this.price.value, this.quantity.value).subscribe(() => {

@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+
+
+
+<p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
+<ul *ngFor="let product of cartProducts">
+    <div class="p-col-12">
+            <div class="col">
+                <div>{{product.name}}</div>
+                <p-button icon="pi pi-trash"  (click)="removeFromCart(product.id)" ></p-button>
+
+            </div>
+    </div>
+</ul>
+
+<!-- <p-button icon="pi pi-trash"  (click)="getUserInfo()" ></p-button> -->
+
+
+</p-card>
+

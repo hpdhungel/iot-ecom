@@ -1,5 +1,6 @@
 require('dotenv').config()
 const { Client } = require('pg')
+const { rows } = require('pg/lib/defaults')
 const { TABLE_NAME } = require('../constants/constants')
 
 
@@ -69,19 +70,21 @@ function loginUser(resp, req) {
         } else {
            
             const data = {
-                text: 'SELECT name, password, email, street, city, state, zip FROM users WHERE email = $1',
+                text: 'SELECT id, name, password, email, street, city, state, zip FROM users WHERE email = $1',
                 values: [req.email]
             }
 
             client.query(data, (err, res) => {
-                if (err) {
-                    throw err;
+                var user_id = parseInt(res.rows[0].id)
+                if (err) {      
+                    console.log(err)
                 }
                 if (res.rows[0] != null && req.password === res.rows[0].password ) {
-                    resp(res.rows);
+                    resp(user_id)
             
                 } else {
                     resp(false)
+                    console.log('err')
                 }
             });
         }

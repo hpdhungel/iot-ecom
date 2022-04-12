@@ -20,6 +20,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from 'primeng/dialog';
+import { CartComponent } from './pages/cart/cart.component';
 
 
 
@@ -32,6 +33,7 @@ import { DialogModule } from 'primeng/dialog';
     FooterComponent,
     SignupComponent,
     ProductsComponent,
+    CartComponent,
     
   ],
   imports: [

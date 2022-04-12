@@ -27,4 +27,7 @@ export class ProductService {
     return this.http.post(`${this.backendUrl}/api/v1/delete-product`, { id })
   }
 
+  addToCart(product_id:number, user_id:number){
+    return this.http.post(`${this.backendUrl}/api/v1/cart`, { product_id, user_id })
+  }
 }
