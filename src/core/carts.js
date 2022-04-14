@@ -15,7 +15,7 @@ async function getAllFromCart(callback, userId) {
         try {
             client.connect()
             const data = {
-                text: 'SELECT carts.product_id, products.id, products.name, products.description FROM products INNER JOIN carts ON carts.product_id = products.id WHERE carts.user_id=$1',
+                text: 'SELECT carts.id,products.id as product_id, products.name, products.description, products.price FROM products INNER JOIN carts ON carts.product_id = products.id WHERE carts.user_id=$1',
                 values: [userId]
             }
             client.query(data, (err, res) => {
@@ -71,9 +71,8 @@ async function removeCart(callback, request){
         try {
             client.connect()
             const data = {
-                text: 'DELETE FROM carts WHERE user_id=$1 AND product_id=$2 RETURNING *;',
-                values: [request.user_id, request.product_id]
-                
+                text: 'DELETE FROM carts WHERE user_id=$1 AND product_id=$2 AND id=$3 RETURNING *;',
+                values: [request.user_id, request.product_id, request.cartId]
             }
             client.query(data, (err, res) => {
                 if (err) {

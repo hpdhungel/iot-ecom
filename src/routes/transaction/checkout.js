@@ -1,7 +1,7 @@
-const { createUser } = require('../../core/users');
+const { checkout } = require('../../core/transaction');
 
 module.exports = async (req, res) => {
-    createUser(data => {
+    checkout(data => {
         res.status(201).send({id: data})
     }, req.body)
 }
