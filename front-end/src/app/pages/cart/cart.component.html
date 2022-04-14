@@ -2,19 +2,53 @@
 
 
 
-<p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
+<!-- <p-card [style]="{'max-width': '100%', 'margin-bottom': '2em', 'align-items': 'center'}">
 <ul *ngFor="let product of cartProducts">
     <div class="p-col-12">
             <div class="col">
                 <div>{{product.name}}</div>
-                <p-button icon="pi pi-trash"  (click)="removeFromCart(product.id)" ></p-button>
+                <p-button icon="pi pi-trash"  (click)="removeFromCart(product.product_id, product.id)" ></p-button>
 
             </div>
     </div>
 </ul>
 
-<!-- <p-button icon="pi pi-trash"  (click)="getUserInfo()" ></p-button> -->
+<p-button icon="pi pi-trash"  (click)="getUserInfo()" ></p-button>
 
+
+</p-card> -->
+
+
+<p-table [value]="cartProducts" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Remove</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td>{{product.name}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.price}}</td>
+            <td>
+                <p-button icon="pi pi-trash"  (click)="removeFromCart(product.product_id, product.id)" ></p-button>
+            </td>
+
+        </tr>
+
+    </ng-template>
+
+</p-table>
+
+<p-card>
+    <td>Total:{{total}}</td>
+
+    <button pButton type="button" label="Checkout" class="p-button-warning" (click)="checkout()"></button>
 
 </p-card>
+
 

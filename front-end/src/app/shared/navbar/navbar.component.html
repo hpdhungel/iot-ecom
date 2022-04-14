@@ -1,4 +1,4 @@
-
+<!-- 
 <ul>
     <div class="row">
 
@@ -29,5 +29,43 @@
     
 
 
-</ul>
-  
+</ul> -->
+<!--   
+<div class="layout-topbar">
+    <a class="layout-topbar-logo" routerLink="/">
+        <img src="" alt="logo">
+        <span>SAKAI</span>
+    </a>
+
+    <a class="p-link layout-menu-button layout-topbar-button" href="#" >
+        <i class="pi pi-bars"></i>
+    </a>
+
+    <a class="p-link layout-topbar-menu-button layout-topbar-button" href="#" >
+        <i class="pi pi-ellipsis-v"></i>
+    </a>
+
+    <div class="layout-topbar-menu" >
+         <a href="#" class="p-link layout-topbar-button">
+            <i class="pi pi-calendar"></i>
+            <span>Calendar</span>
+        </a>
+        <a href="#" class="p-link layout-topbar-button">
+            <i class="pi pi-cog"></i>
+            <span>Settings</span>
+        </a>
+        <a href="#" class="p-link layout-topbar-button">
+            <i class="pi pi-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+</div> -->
+
+<p-menubar [model]="items">
+    <div>
+        <p-button *ngIf="logoutButton" icon="pi pi-shopping-cart" (click)="cart()" ></p-button>
+        <input type="text" pInputText placeholder="Search">
+        <button   *ngIf="logoutButton" type="button" pButton label="Logout" icon="pi pi-power-off"   (click)="logout()" style="margin-left:.25em"></button>
+        <button   *ngIf="!logoutButton" type="button" pButton label="Login" icon="pi pi-lock-open"   (click)="login()" style="margin-left:.25em"> </button>
+    </div>
+</p-menubar>

@@ -6,8 +6,6 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class CartService {
-  user: any
-  userId: number
   constructor(private http: HttpClient) { }
   
   backendUrl = environment.backendApi
@@ -15,9 +13,12 @@ export class CartService {
   getFromCart(user_id){
       return this.http.get(`${this.backendUrl}/api/v1/carts/`+user_id)   
   }
-  removeCart(user_id, product_id){
-    return this.http.post(`${this.backendUrl}/api/v1/remove-cart`, {user_id, product_id} )   
-}
+  removeCart(user_id, product_id, cartId){
+    return this.http.post(`${this.backendUrl}/api/v1/remove-cart`, {user_id, product_id, cartId} )   
+  }
+  checkout(user_id, product_id, cartId){
+    return this.http.post(`${this.backendUrl}/api/v1/checkout`, {user_id} )   
+  }
 
 
 }

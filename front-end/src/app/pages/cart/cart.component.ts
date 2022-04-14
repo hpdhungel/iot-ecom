@@ -8,41 +8,60 @@ import { CartService } from './services/cart.service';
 })
 export class CartComponent implements OnInit {
 
-  constructor( private cartService: CartService) { }
+  constructor(private cartService: CartService) { }
 
   cartProducts: any
-  user: any 
+  user: any
 
   userId: number
-  
-
+  total: number = 0
+  removeItem: boolean = false
   ngOnInit(): void {
     this.getFromCart()
   }
+checkout(){
+  
+}
 
-  getFromCart(){
-    this.user = JSON.parse(window.localStorage.getItem('User'))
-     console.log(this.user)
-     this.userId = this.user.id
-      this.cartService.getFromCart(this.user.id).subscribe((data) => {
-        this.cartProducts = data
-        console.log(data)
-        }),
-        (error) => {
-          console.log(error)
-        }
+  totalPrice() {
+    if (this.removeItem) {
+      this.removeItem = false
+      for (let i = 0; i < this.cartProducts.length; i++) {
+        let tot = this.cartProducts[i].price
+        this.total = this.total - parseInt(tot)
+      }
+    } else {
+      for (let i = 0; i < this.cartProducts.length; i++) {
+        let tot = this.cartProducts[i].price
+        this.total = this.total + parseInt(tot)
+      }
+    }
+
   }
 
-  removeFromCart(product_id){
-    this.cartService.removeCart(this.userId, product_id).subscribe((data) => {
+  getFromCart() {
+    this.user = JSON.parse(window.localStorage.getItem('User'))
+    console.log(this.user)
+    this.userId = this.user.id
+    this.cartService.getFromCart(this.user.id).subscribe((data) => {
+      this.cartProducts = data
+      this.totalPrice()
+    }),
+      (error) => {
+        console.log(error)
+      }
+  }
+
+  removeFromCart(product_id, cart_id) {
+    this.cartService.removeCart(this.userId, product_id, cart_id).subscribe((data) => {
       console.log(data)
-      this.ngOnInit()
-      }),
+      this.getFromCart()
+      this.removeItem = true
+    }),
       (error) => {
         console.log(error)
       }
 
   }
-
 
 }

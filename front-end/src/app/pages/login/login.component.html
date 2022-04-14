@@ -1,22 +1,27 @@
 <app-navbar></app-navbar>
 
 <p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
-    <ng-template pTemplate="header">
-        Login
-    </ng-template>
-    <span class="p-float-label">
 
-        <input id="float-input" type="text" pInputText placeholder="Email" [formControl]="email">
-        <label for="float-input">Email</label>
-    </span>
-    <br />
-    <span class="p-float-label">
-        <input id="float-input" type="password" pInputText placeholder="Password" [formControl]="password">
 
-        <label for="float-input">Password</label>
-    </span>
 
-    <br />
-    <button pButton type="button" (click)="login()" label="Login" class="p-button-help"></button>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <span class="p-float-label">
+            <input formControlName="email" id="float-input" pInputText placeholder="Email">
+            <!-- <input id="float-input" type="text" pInputText placeholder="Email" [formControl]="email"> -->
+            <label for="float-input">Email</label>
+            <small *ngIf="userEmail.invalid"  class="p-error block">Username is not available.</small>
+
+        </span>
+        <br />
+        <span class="p-float-label">
+            <input id="float-input" type="password" pInputText placeholder="Password" formControlName="password">
+            <label for="float-input">Password</label>
+            <label *ngIf="userPassword.invalid" [ngClass]="'error'"> Name is required with 10 max character. </label>
+        </span>
+        <div>
+            <button pButton type="submit" label="Login" class="p-button-help"></button>
+        </div>
+    </form>
+    <button pButton type="button" label="Sign Up" class="p-button-help" (click)="signup()"></button>
 
 </p-card>

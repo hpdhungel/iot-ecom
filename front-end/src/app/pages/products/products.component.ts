@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from './services/product.service';
 import { Message } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
@@ -7,26 +7,36 @@ import { ConfirmationService } from 'primeng/api';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
   constructor(private confirmationService: ConfirmationService, private productService: ProductService) { }
 
-  name = new FormControl("");
-  description = new FormControl("");
-  price = new FormControl("")
-  quantity = new FormControl("")
-  id = new FormControl("")
+  // name = new FormControl("", [Validators.required]);
+  // description = new FormControl("", [Validators.required]);
+  // price = new FormControl("", [Validators.required])
+  // quantity = new FormControl("", [Validators.required])
+  // id = new FormControl("", [Validators.required])
+
+  productForm = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    description: new FormControl("", [Validators.required]),
+    price: new FormControl("", [Validators.required]),
+    quantity: new FormControl("", [Validators.required]),
+    id: new FormControl("", [Validators.required])
+  }); 
+
 
   products: any
+  product: any
 
   showProductForm: boolean = false;
+  updateProductForm:boolean = false
   createProductModel: boolean;
   msgs: Message[] = [];
   deleteStatus: any
   messageTitle: any
   message: any
-  
 
   ngOnInit() {
     this.getAllProduct()
@@ -41,12 +51,28 @@ export class ProductsComponent implements OnInit {
   }
 
   showForm() {
-    this.showProductForm = !this.showProductForm
+    this.updateProductForm = false
+    this.showProductForm = true
+    this.productForm.get('name').setValue('')
+    this.productForm.get('description').setValue('')
+    this.productForm.get('price').setValue('')
+    this.productForm.get('quantity').setValue('')
+    this.productForm.get('id').setValue('')
+  }
+
+  showUpdateForm(p){
+    this.updateProductForm = true
+    this.showProductForm = true
+    this.product = p
+    this.productForm.get('name').setValue(this.product.name)
+    this.productForm.get('description').setValue(this.product.description)
+    this.productForm.get('price').setValue(this.product.price)
+    this.productForm.get('quantity').setValue(this.product.quantity)
+    this.productForm.get('id').setValue(this.product.id)
   }
 
   messageModel(title, mess) {
     this.createProductModel = true;
-
     this.message = mess
     this.messageTitle = title
   }
@@ -68,17 +94,15 @@ export class ProductsComponent implements OnInit {
 
   getAllProduct() {
     this.productService.getProducts().subscribe((data) => {
-      
       this.products = data
     },
     (error) => {
       this.messageModel(error.name, error.statusText)
     })
   }
-  
 
   addProduct() {
-    this.productService.createProduct(this.name.value, this.description.value, this.price.value, this.quantity.value).subscribe(() => {
+    this.productService.createProduct(this.productForm.get('name').value, this.productForm.get('description').value, this.productForm.get('price').value, this.productForm.get('quantity').value).subscribe(() => {
       this.wait(1)
       this.messageModel("success", "success")
       this.ngOnInit()
@@ -105,7 +129,6 @@ export class ProductsComponent implements OnInit {
               this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'You have successfully deleted' }];
             }
           },
-
           (error) => {
             this.wait(1)
             this.messageModel(error.name, error.statusText)
@@ -117,16 +140,14 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  updateProduct(product) {
-    console.log(product)
-    this.productService.updateProduct(this.name.value, this.description.value, this.price.value, this.quantity.value, this.id.value).subscribe(data => {
-      if (data > 0) {
-        this.addProduct(),
+  updateProduct() {
+    this.productService.updateProduct(this.productForm.get('name').value, this.productForm.get('description').value, this.productForm.get('price').value, this.productForm.get('quantity').value, this.productForm.get('id').value).subscribe(data => {
+      if (data) {
+        this.getAllProduct(),
           this.showProductForm = false
       } else {
         console.log('something went wrong')
       }
     })
   }
-
 }
