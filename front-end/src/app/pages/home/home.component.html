@@ -1,8 +1,17 @@
 <app-navbar></app-navbar>
-<div *ngIf="logoutButton">
-    <button  pButton type="button" (click)="logout()" label="Logout"class="p-button-help"></button>
-</div>
-<!-- <app-products>
-
-</app-products> -->
-
+<p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [circular]="false">
+    <ng-template pTemplate="header">
+    </ng-template>
+    <ng-template let-product pTemplate="item">
+        <div class="product-item">
+            <div class="product-item-content">
+                <div class="mb-3">
+                </div>
+                <div class="card">
+                    <h4 class="mb-1">{{product.name}}</h4>
+                    <h6 class="mt-0 mb-3">${{product.price}}</h6>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-carousel>

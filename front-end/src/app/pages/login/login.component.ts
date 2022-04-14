@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './services/login.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,18 +10,34 @@ import { FormControl } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-
   constructor(private loginService:LoginService,  private router: Router) {  }
-  email = new FormControl("");
-  password = new FormControl("");
-
-
   ngOnInit() {
   }
 
+  loginForm = new FormGroup({
+    email: new FormControl('hpd@example.com', [Validators.required]),
+    password: new FormControl('hari', [Validators.required])  
+  }); 
+
+  get userEmail(): any {
+    return this.loginForm.get('email');
+  }
+
+  get userPassword(): any {
+    return this.loginForm.get('password');
+  }
+
+  signup(){
+    this.router.navigate(['/signup'])
+  }
+
   login() {
-    this.loginService.login(this.email.value, this.password.value).subscribe(query => {
+    let email =this.loginForm.get('email').value
+    let password = this.loginForm.get('password').value
+
+    this.loginService.login(email, password).subscribe(query => {
       if(query!=false){
+        console.log(query)
         try {
           localStorage.setItem('User', JSON.stringify(query));
         } catch (e) {
@@ -32,12 +48,7 @@ export class LoginComponent implements OnInit {
         console.log('Incorrect Username/Password')
       }
     })
-
   }
-
-
-
-  
 
 }
 

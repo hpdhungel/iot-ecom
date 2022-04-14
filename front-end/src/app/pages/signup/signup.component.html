@@ -1,42 +1,59 @@
-<p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}" >
-    <span class="p-float-label">
+<app-navbar></app-navbar>
 
-        <input id="float-input" type="text" pInputText placeholder="Name" [formControl]="name"> 
-        <label for="float-input">Name</label>
-    </span>
-    <span class="p-float-label">
+<p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
+    <form [formGroup]="signupForm" (ngSubmit)="signup()">
+        <span class="p-float-label">
+            <input formControlName="name" id="float-input" pInputText >
+            <label for="float-input">Name</label>
+        </span>
+        <small *ngIf="name.invalid"  class="p-error block">Please Enter name.</small>
+        <br /> 
 
-        <input id="float-input" type="text" pInputText placeholder="Email" [formControl]="email"> 
-        <label for="float-input">Email</label>
-    </span>
-    <span class="p-float-label">
+        <span class="p-float-label">
+            <input formControlName="email" id="float-input" pInputText >
+            <label for="float-input">Email</label>
+        </span>
+        <small *ngIf="email.invalid"  class="p-error block">Please Enter email.</small>
+        <br />   
 
-        <input id="float-input" type="text" pInputText placeholder="Password" [formControl]="password"> 
-        <label for="float-input">Password</label>
-    </span>
-    <br/>
-    <span class="p-float-label">
+        <span class="p-float-label">
+            <input id="float-input" type="password" pInputText formControlName="password">
+            <label for="float-input">Password</label>
+        </span>
+        <small *ngIf="password.invalid"  class="p-error block">Please Enter Password.</small>
+        <br/>
 
-        <input id="float-input" type="text" pInputText placeholder="Street" [formControl]="street"> 
-        <label for="float-input">Street</label>
-    </span>
-    
-    <span class="p-float-label">
-        <input id="float-input" type="text" pInputText placeholder="City" [formControl]="city"> 
+        <span class="p-float-label">
+            <input formControlName="street" id="float-input" pInputText >
+            <label for="float-input">Street</label>
+        </span>
+        <small *ngIf="street.invalid"  class="p-error block">Please Enter street.</small>
+        <br />
 
-        <label for="float-input">City</label>
-    </span>
-    <span class="p-float-label">
-        <input id="float-input" type="text" pInputText placeholder="State" [formControl]="state"> 
+        <span class="p-float-label">
+            <input formControlName="city" id="float-input" pInputText >
+            <label for="float-input">City</label>
+        </span>
+        <small *ngIf="city.invalid"  class="p-error block">Please Enter city.</small>
+        <br />
 
-        <label for="float-input">State</label>
-    </span>
-    <span class="p-float-label">
-        <input id="float-input" type="text" pInputText placeholder="Zip" [formControl]="zip"> 
+        <span class="p-float-label">
+            <input formControlName="state" id="float-input" pInputText >
+            <label for="float-input">State</label>
+        </span>
+        <small *ngIf="state.invalid"  class="p-error block">Please Enter state.</small>
 
-        <label for="float-input">Zip</label>
-    </span>
-<br/>
-    <button pButton type="button" (click)="signup()" label="Sign Up"class="p-button-help"></button>
+        <br />   
+        <span class="p-float-label">
+            <input formControlName="zip" id="float-input" pInputText>
+            <label for="float-input">Zip</label>
+        </span>
+        <small *ngIf="zip.invalid"  class="p-error block">Please Enter zip.</small>
 
+        <br />    
+        <div>
+            <button pButton type="submit" label="Sign Up" class="p-button-help"></button>
+        </div>
+    </form>
+    <button pButton type="button" label="Login" class="p-button-help" (click)="login()"></button>
 </p-card>

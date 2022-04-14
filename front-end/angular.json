@@ -6,8 +6,10 @@
     "front-end": {
       "projectType": "application",
       "schematics": {
+
         "@schematics/angular:application": {
-          "strict": true
+          "strict": true,
+          "style": "scss" 
         }
       },
       "root": "",
@@ -29,7 +31,9 @@
             "styles": [
             "node_modules/primeicons/primeicons.css",
              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-             "node_modules/primeng/resources/primeng.min.css"
+             "node_modules/primeng/resources/primeng.min.css",
+             "./node_modules/primeng/resources/primeng.css",
+             "./node_modules/primeflex/primeflex.css"
       
             ],
             "scripts": []

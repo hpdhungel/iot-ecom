@@ -2,69 +2,62 @@
 <p-messages [value]="msgs"></p-messages>
 
 <button pButton type="button" (click)="showForm()" label="Add Product" class="p-button-help"></button>
-<div *ngIf="showProductForm">
 
-    <p-card class='showForm()' [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
-
-        <span class="p-float-label">
-            <input id="float-input" type="text" pInputText placeholder="Title" [formControl]="name">
-            <label for="float-input">Title</label>
-        </span>
-        <br />
-        <span class="p-float-label">
-
-            <input id="float-input" type="text" pInputText placeholder="Description" [formControl]="description">
-            <label for="float-input">Description</label>
-        </span>
-        <br />
-        <span class="p-float-label">
-
-            <input id="float-input" type="text" pInputText placeholder="Price" [formControl]="price">
-            <label for="float-input">Price</label>
-        </span>
-        <br />
-        <span class="p-float-label">
-
-            <input id="float-input" type="text" pInputText placeholder="Quantity" [formControl]="quantity">
-            <label for="float-input">Quantity</label>
-        </span>
-        <br />
-
-        <button pButton type="button" (click)="addProduct()" label="Create" class="p-button-help"></button>
-
+<p-dialog [(visible)]="showProductForm" [modal]="true">
+    <p-card class='showForm()'>
+        <form [formGroup]="productForm">
+            <span class="p-float-label">
+                <input formControlName="name" id="float-input" pInputText placeholder="Title">
+                <label for="float-input">Title</label>
+            </span>
+            <br />
+            <span class="p-float-label">
+                <input id="float-input" type="text" pInputText placeholder="Description" formControlName="description">
+                <label for="float-input">Description</label>
+            </span>
+            <br />
+            <span class="p-float-label">
+                <input id="float-input" type="text" pInputText placeholder="Price" formControlName="price">
+                <label for="float-input">Price</label>
+            </span>
+            <br />
+            <span class="p-float-label">
+                <input id="float-input" type="text" pInputText placeholder="Quantity" formControlName="quantity">
+                <label for="float-input">Quantity</label>
+            </span>
+            <br />
+            <button *ngIf="!updateProductForm" pButton type="button" (click)="addProduct()" label="Create"
+                class="p-button-help"></button>
+            <button *ngIf="updateProductForm" pButton type="button" (click)="updateProduct()" label="Update"
+                class="p-button-help"></button>
+        </form>
     </p-card>
+</p-dialog>
 
+<div class="card">
+    <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" layout="grid">
+        <ng-template let-product pTemplate="gridItem">
+            <div class="p-col-12 p-md-4">
+                <div class="product-grid-item card">
+                    <div class="product-grid-item-content">
+                        <div class="product-name">{{product.name}}</div>
+                        <div class="product-description">{{product.description}}</div>
+                        <span class="product-price">${{product.price}}</span>
+                    </div>
+                    <div class="product-grid-item-bottom">
+                        <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.id)"></p-button>
+                        <p-button icon="pi pi-pencil" (click)="showUpdateForm(product)"></p-button>
+                        <p-button icon="pi pi-trash" (click)="deleteProduct(product.id)"></p-button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
 </div>
 
-
-<ul *ngFor="let product of products.product">
-    <div class="p-col-12">
-        <p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
-            <div class="col">
-                <div>{{product.name}}</div>
-                <div>{{product.description}}</div>
-            </div>
-            <div>
-                <span class="product-price">${{product.price}}</span>
-                <br/>
-                <span class="product-price">{{product.quantity}}</span>
-
-                <br/>
-                <span class="product-price">ID{{product.id}}</span>
-
-            </div>
-            <p-button icon="pi pi-shopping-cart"></p-button>
-            <p-button icon="pi pi-pencil"  (click)="showForm()" ></p-button>
-
-            <p-button icon="pi pi-trash"  (click)="deleteProduct(product.id)" ></p-button>
-
-        </p-card>
-    </div>
-</ul>
-
-<p-dialog header={{messageTitle}} [(visible)]="createProductModel" [style]="{width: '50vw'}" [baseZIndex]="10000">
+<p-dialog header={{messageTitle}} [(visible)]="createProductModel" [style]="{width: '50vw'}" [modal]="true"
+    [baseZIndex]="10000">
     <p>{{message}}</p>
-   
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>

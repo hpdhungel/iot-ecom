@@ -32,3 +32,17 @@ VALUES
 ('Macbook 16"', 'The latest 11th Generation Intel® Core™ processors deliver incredible', 10.00, 10)
 
 
+CREATE TABLE IF NOT EXISTS carts (
+  ID SERIAL PRIMARY KEY,
+  user_id INT references users(id),
+  product_id INT references products(id)
+)
+ 
+
+ CREATE TABLE IF NOT EXISTS carts (
+  id SERIAL PRIMARY KEY,
+  user_id integer REFERENCES users(id),
+  product_id integer REFERENCES products(id)
+);
+
+ 

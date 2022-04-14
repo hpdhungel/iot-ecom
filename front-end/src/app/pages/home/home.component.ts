@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
 import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
+import { ProductService } from '../products/services/product.service';
 
 @Component({
   selector: 'app-home',
@@ -8,32 +10,23 @@ import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private confirmationService: ConfirmationService, private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.hideLogout()
+    this.getAllProduct()
+  }
+  products: any
 
+
+  getAllProduct() {
+    this.productService.getProducts().subscribe((data) => {
+      this.products = data
+      console.log(this.products)
+    },
+    (error) => {
+      console.log(error.name, error.statusText)
+    })
   }
 
-  logoutButton:boolean = true;
-
-  hideLogout(){
-    var user = window.localStorage.getItem('User');
-    if (user==null){
-      this.logoutButton= false
-    } else {
-      this.logoutButton= true
-
-    }
-  }
-
-  logout(){
-    localStorage.removeItem("User");
-    var user = window.localStorage.getItem('User');
-    if (user==null){
-      console.log('success')
-      this.hideLogout()
-    }
-  }
 
 }

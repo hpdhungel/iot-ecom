@@ -20,11 +20,14 @@ export class ProductService {
   }
 
   updateProduct(name:string, description:string, price:number, quantity:number, id:number){
-    return this.http.post(`${this.backendUrl}/api/v1/product`, {name, description, price, quantity, id })
+    return this.http.put(`${this.backendUrl}/api/v1/product`, {name, description, price, quantity, id })
   }
 
   deleteProduct(id:number){
     return this.http.post(`${this.backendUrl}/api/v1/delete-product`, { id })
   }
 
+  addToCart(product_id:number, user_id:number){
+    return this.http.post(`${this.backendUrl}/api/v1/cart`, { product_id, user_id })
+  }
 }
