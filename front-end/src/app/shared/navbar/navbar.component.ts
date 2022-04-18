@@ -39,34 +39,15 @@ export class NavbarComponent implements OnInit {
         items:[
             {
                 label:'Orders',
-                icon:'pi pi-fw pi-user-plus',
+                icon:'pi pi-book',
                 routerLink: ['/orders']
 
             },
             {
-                label:'Delete',
-                icon:'pi pi-fw pi-user-minus',
+                label:'Cart',
+                icon:'pi pi-shopping-cart',
+                routerLink: ['/cart']
 
-            },
-            {
-                label:'Search',
-                icon:'pi pi-fw pi-users',
-                items:[
-                {
-                    label:'Filter',
-                    icon:'pi pi-fw pi-filter',
-                    items:[
-                        {
-                            label:'Print',
-                            icon:'pi pi-fw pi-print'
-                        }
-                    ]
-                },
-                {
-                    icon:'pi pi-fw pi-bars',
-                    label:'List'
-                }
-                ]
             }
         ]
     }

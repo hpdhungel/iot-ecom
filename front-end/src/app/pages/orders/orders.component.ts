@@ -21,14 +21,10 @@ export class OrdersComponent implements OnInit {
     this.user = JSON.parse(window.localStorage.getItem('User'))
     this.ordersService.orders(this.user.id).subscribe((data:any) => {
      this.orders = data
-     console.log(this.orders)
-
     }),
       (error) => {
         console.log(error)
       }
   }
-
-
 
 }

@@ -12,9 +12,11 @@ const options = {
 async function checkout(callback, req) {
     const client = new Client(options);
 
-    let product_id = req.product_id
+    let product =  req.products
+
+    console.log(product)
     let userId = parseInt(req.user_id)
-    console.log(userId)
+    let total = parseInt(req.total)
     try {
         client.connect()
         const removeAllFromCart = {
@@ -23,8 +25,8 @@ async function checkout(callback, req) {
         }
 
         const addToTransaction = {
-            text: 'insert into transaction(product_id, user_id) VALUES($1, $2) RETURNING *;',
-            values: [product_id, userId]
+            text: 'insert into transaction(products, user_id, total) VALUES($1, $2, $3) RETURNING *;',
+            values: [{product}, userId, total]
         }
         client.query(addToTransaction, (err, res) => {
             if (err) {
@@ -50,6 +52,35 @@ async function checkout(callback, req) {
     }
 }
 
+async function getAllFromOrder(callback, userId) {
+    const client = new Client(options);
+    console.log(userId)
+    try {
+        client.connect()
+        const data = {
+            text: 'SELECT * FROM transaction WHERE user_id=$1',
+            values: [userId]
+        }
+        client.query(data, (err, res) => {
+            if (err) {
+                throw err;
+            }
+            let data = JSON.parse(JSON.stringify(res.rows))
+            callback(data);
+            client.end(err=>{
+                if(err){
+                    console.log(err)
+                }
+            })
+        });
+    }
+    catch (err) {
+        console.log(err)
+    }
+
+}
+
 module.exports = {
-    checkout
+    checkout,
+    getAllFromOrder
 }

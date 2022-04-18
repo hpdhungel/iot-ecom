@@ -58,6 +58,8 @@
 <p-dialog header={{messageTitle}} [(visible)]="createProductModel" [style]="{width: '50vw'}" [modal]="true"
     [baseZIndex]="10000">
     <p>{{message}}</p>
+    <button pButton type="button" (click)="goToCard()" label="Go to Cart"
+    class="p-button-help"></button>
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>

@@ -1,5 +1,4 @@
 <app-navbar></app-navbar>
-<p>orders works!</p>
 
 <p-table [value]="orders" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
     <ng-template pTemplate="header">
@@ -7,26 +6,19 @@
             <th>OrderId</th>
             <th>Product Info</th>
             <th>Total</th>
-         
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-order>
         <tr>
             <td>{{order.id}}</td>
             <td>
-                <span *ngFor="let p of order.products.product"> 
-                   Name: {{p.name}} 
-                   Price: {{p.price}}
-                   <br/>
+                <span *ngFor="let p of order.products.product">
+                    Name: {{p.name}}
+                    Price: {{p.price}}
+                    <br />
                 </span>
-
-
             </td>
-
-        
-
-            <td>{{order.total}}</td>
-           
+            <td>${{order.total}}.00</td>
         </tr>
     </ng-template>
 </p-table>

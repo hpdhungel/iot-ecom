@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from './services/product.service';
 import { Message } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -10,7 +11,7 @@ import { ConfirmationService } from 'primeng/api';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  constructor(private confirmationService: ConfirmationService, private productService: ProductService) { }
+  constructor(private confirmationService: ConfirmationService, private productService: ProductService,  private router: Router) { }
 
   // name = new FormControl("", [Validators.required]);
   // description = new FormControl("", [Validators.required]);
@@ -37,7 +38,7 @@ export class ProductsComponent implements OnInit {
   deleteStatus: any
   messageTitle: any
   message: any
-
+  showCardButton: boolean
   ngOnInit() {
     this.getAllProduct()
   }
@@ -75,6 +76,8 @@ export class ProductsComponent implements OnInit {
     this.createProductModel = true;
     this.message = mess
     this.messageTitle = title
+    this.showCardButton= true
+
   }
 
   addToCart(productId){
@@ -84,7 +87,8 @@ export class ProductsComponent implements OnInit {
       this.messageModel("success", "success")
       this.ngOnInit()
       this.showProductForm = false
-      console.log("success")
+      this.showCardButton =false
+
     },
     (error) => {
       this.wait(1)
@@ -99,6 +103,11 @@ export class ProductsComponent implements OnInit {
     (error) => {
       this.messageModel(error.name, error.statusText)
     })
+  }
+
+  goToCard(){
+
+    this.router.navigate(['/cart'])
   }
 
   addProduct() {
