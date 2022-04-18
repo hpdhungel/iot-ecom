@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartService } from './services/cart.service';
 
 @Component({
@@ -8,19 +9,29 @@ import { CartService } from './services/cart.service';
 })
 export class CartComponent implements OnInit {
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService,  private router: Router) { }
 
   cartProducts: any
   user: any
 
   userId: number
   total: number = 0
+  checkoutTotalprice:number =0
   removeItem: boolean = false
   ngOnInit(): void {
     this.getFromCart()
   }
 checkout(){
-  
+  for (let i = 0; i < this.cartProducts.length; i++) {
+    let tot = parseInt(this.cartProducts[i].price)
+    this.checkoutTotalprice = this.checkoutTotalprice+tot
+  }
+  console.log(this.total)
+  this.cartService.checkout(this.user.id, this.cartProducts, this.total).subscribe((data) => {
+    this.router.navigate(['/orders'])
+    this.checkoutTotalprice =0
+  })
+
 }
 
   totalPrice() {

@@ -88,11 +88,15 @@ async function deleteProduct(callback, req) {
 
 async function updateProduct(callback, req) {
     const client = new Client(options);
+    price = parseInt(req.price)
+    quantity = parseInt(req.quantity)
+    id = parseInt(req.id)
+
     try {
         client.connect()
         const data = {
-            text: 'UPDATE products SET name=$1, description=$2, price=$3, quantity=$4) VALUES($1, $2, $3, $4) RETURNING *;',
-            values: [req.name, req.description, price, quantity]
+            text: 'UPDATE products SET name=$1, description=$2, price=$3, quantity=$4 WHERE id=$5 RETURNING *;',
+            values: [req.name, req.description, price, quantity, id]
         }
         client.query(data, (err, res) => {
             if (err) {

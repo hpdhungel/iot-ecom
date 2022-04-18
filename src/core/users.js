@@ -9,9 +9,10 @@ const options = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD
 }
-const client = new Client(options)
 
 async function getAllUsers() {
+    const client = new Client(options)
+
     try {
         client.connect()
         const data = await client.query(`SELECT * FROM ${TABLE_NAME.users}`)
@@ -24,17 +25,24 @@ async function getAllUsers() {
 }
 
 async function createUser(resp, req) {
+    const client = new Client(options)
+    let zip = parseInt(req.zip)
     try {
         client.connect()
         const data = {
             text: 'INSERT INTO users(name, password, email, street, city, state, zip) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *;',
-            values: [req.name, req.password, req.email, req.street, req.city, req.state, req.zip]
+            values: [req.name, req.password, req.email, req.street, req.city, req.state, zip]
         }
         client.query(data, (err, res) => {
             if (err) {
                 throw err;
             }
-            resp(res.rows);
+            resp(res.rows[0].id);
+            client.end(err=>{
+                if(err){
+                    console.log(err)
+                }
+            })
         });
     }
     
@@ -44,6 +52,8 @@ async function createUser(resp, req) {
 }
 
 async function updateUser(resp, req) {
+    const client = new Client(options)
+
     try {
         client.connect()
         const data = {

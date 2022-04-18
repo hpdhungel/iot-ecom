@@ -45,4 +45,12 @@ CREATE TABLE IF NOT EXISTS carts (
   product_id integer REFERENCES products(id)
 );
 
- 
+CREATE TABLE IF NOT EXISTS transaction (
+  id SERIAL PRIMARY KEY,
+  user_id integer REFERENCES users(id),
+
+  subtotal integer,
+  tax integer,
+  total integer,
+  products jsonb
+);
