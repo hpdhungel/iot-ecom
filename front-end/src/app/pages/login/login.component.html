@@ -1,27 +1,33 @@
 <app-navbar></app-navbar>
 
-<p-card [style]="{'width': '25rem', 'margin-bottom': '2em', 'align-items': 'center'}">
+<div class="center" style="max-width: 40rem;">
+    <p-card>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
 
+            <div class="center p-fluid p-grid">
+                <div class="p-field p-col-12 p-md-4">
+                    <span class="p-float-label">
+                        <input formControlName="email" id="float-input" pInputText>
+                        <label for="float-input">Email</label>
+                    </span>
+                    <small *ngIf="email.invalid" class="p-error block">Please enter your name.</small>
+                    <br />
+                </div>
+                <div class="p-field p-col-12 p-md-4">
+                    <span class="p-float-label">
+                        <input id="float-input" type="password" pInputText placeholder="Password" formControlName="password">
+                        <label for="float-input">Password</label>
+                    </span>
+                    <small *ngIf="password.invalid" class="p-error block">Please enter your password.</small>
+                    <br />
+                </div>
+            </div>
+            <button  [disabled]="!loginForm.valid" pButton type="submit" label="Login"  class="p-button-help"></button> 
 
-
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
-        <span class="p-float-label">
-            <input formControlName="email" id="float-input" pInputText placeholder="Email">
-            <!-- <input id="float-input" type="text" pInputText placeholder="Email" [formControl]="email"> -->
-            <label for="float-input">Email</label>
-            <small *ngIf="userEmail.invalid"  class="p-error block">Username is not available.</small>
-
-        </span>
+        </form>
         <br />
-        <span class="p-float-label">
-            <input id="float-input" type="password" pInputText placeholder="Password" formControlName="password">
-            <label for="float-input">Password</label>
-            <label *ngIf="userPassword.invalid" [ngClass]="'error'"> Name is required with 10 max character. </label>
-        </span>
-        <div>
-            <button pButton type="submit" label="Login" class="p-button-help"></button>
+        <div class="col">
+        <p-button label="click here" styleClass="p-button-link" (click)="signup()">need an account? </p-button>
         </div>
-    </form>
-    <button pButton type="button" label="Sign Up" class="p-button-help" (click)="signup()"></button>
-
-</p-card>
+    </p-card>
+</div>

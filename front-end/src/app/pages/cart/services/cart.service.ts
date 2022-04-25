@@ -17,6 +17,7 @@ export class CartService {
     return this.http.post(`${this.backendUrl}/api/v1/remove-cart`, {user_id, product_id, cartId} )   
   }
   checkout(user_id, products, total){
+    
     return this.http.post(`${this.backendUrl}/api/v1/checkout`, {user_id, products, total} )   
   }
 

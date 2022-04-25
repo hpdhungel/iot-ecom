@@ -23,12 +23,12 @@ function getAllProducts(list) {
                     if(err){
                         console.log('unable to close the connection' + err)
                     }
-                    console.log('client  disconnect successful from getAllProduct')    
                 })
             })
         }
     })
 }
+
 
 async function createNewProduct(callback, req) {
 const client = new Client(options);
@@ -37,10 +37,11 @@ const client = new Client(options);
     let quantity = parseInt(req.quantity);
 
     try {
+        console.log(req)
         client.connect()
         const data = {
-            text: 'INSERT INTO products(name, description, price, quantity) VALUES($1, $2, $3, $4) RETURNING *;',
-            values: [req.name, req.description, price, quantity]
+            text: 'INSERT INTO products(name, description, img_url, price, quantity ) VALUES($1, $2, $3, $4, $5) RETURNING *;',
+            values: [req.name, req.description, req.imgUrl, price, quantity]
         }
         client.query(data, (err, res) => {
             if (err) {
@@ -65,7 +66,7 @@ async function deleteProduct(callback, req) {
     try {
         client.connect()
         const data = {
-            text: 'DELETE FROM products WHERE id=$1 RETURNING *;',
+            text: 'DELETE FROM products WHERE product_id=$1 RETURNING *;',
             values: [productId]
             
         }
@@ -88,15 +89,16 @@ async function deleteProduct(callback, req) {
 
 async function updateProduct(callback, req) {
     const client = new Client(options);
+    console.log(req)
     price = parseInt(req.price)
     quantity = parseInt(req.quantity)
-    id = parseInt(req.id)
+    id = parseInt(req.product_id)
 
     try {
         client.connect()
         const data = {
-            text: 'UPDATE products SET name=$1, description=$2, price=$3, quantity=$4 WHERE id=$5 RETURNING *;',
-            values: [req.name, req.description, price, quantity, id]
+            text: 'UPDATE products SET name=$1, description=$2, img_url=$3, price=$4, quantity=$5 WHERE product_id=$6 RETURNING *;',
+            values: [req.name, req.description, req.imgUrl, price, quantity, id ]
         }
         client.query(data, (err, res) => {
             if (err) {

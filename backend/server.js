@@ -4,6 +4,8 @@ const cors = require('cors');
 const bodyparser = require('body-parser');
 require('dotenv').config()
 
+const {authenticateToken} = require('./src/core/jwt')
+
 const getAllUsers = require('./src/routes/users/getAllUsers')
 const createUser = require('./src/routes/users/createUser');
 const updateUser = require('./src/routes/users/updateUser');
@@ -33,16 +35,16 @@ app.put('/api/v1/users', updateUser);
 app.post('/api/v1/login', loginUser);
 
 app.get('/api/v1/products', getAllProducts)
-app.post('/api/v1/product', createNewProduct);
-app.post('/api/v1/delete-product', deleteProduct);
-app.put('/api/v1/product', updateProduct);
+app.post('/api/v1/product', authenticateToken, createNewProduct);
+app.post('/api/v1/delete-product', authenticateToken, deleteProduct);
+app.put('/api/v1/product', authenticateToken, updateProduct);
 
-app.post('/api/v1/cart', addToCart);
-app.post('/api/v1/remove-cart', removeCart);
+app.post('/api/v1/cart',authenticateToken, addToCart);
+app.post('/api/v1/remove-cart', authenticateToken, removeCart);
 
 app.get('/api/v1/carts/:userId', getAllFromCart)
 
-app.post('/api/v1/checkout', checkout)
-app.get('/api/v1/orders/:userId', order)
+app.post('/api/v1/checkout', authenticateToken, checkout)
+app.get('/api/v1/orders/:userId', authenticateToken, order)
 
 app.listen(process.env.PORT, () => console.log(`server has started ${process.env.PORT}`))

@@ -15,12 +15,12 @@ export class ProductService {
     return this.http.get(`${this.backendUrl}/api/v1/products`)
   }
 
-  createProduct(name:string, description:string, price:number, quantity:number){
-    return this.http.post(`${this.backendUrl}/api/v1/product`, {name, description, price, quantity })
+  createProduct(name:string, description:string,  imgUrl:string, price:number, quantity:number){
+    return this.http.post(`${this.backendUrl}/api/v1/product`, {name, description, imgUrl, price, quantity })
   }
 
-  updateProduct(name:string, description:string, price:number, quantity:number, id:number){
-    return this.http.put(`${this.backendUrl}/api/v1/product`, {name, description, price, quantity, id })
+  updateProduct(name:string, description:string,  imgUrl:string, price:number, quantity:number, product_id:number){
+    return this.http.put(`${this.backendUrl}/api/v1/product`, {name, description, imgUrl, price, quantity, product_id })
   }
 
   deleteProduct(id:number){

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {InputTextModule} from 'primeng/inputtext';
@@ -9,7 +9,7 @@ import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import {ConfirmationService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { MenubarModule } from 'primeng/menubar';
 import {TableModule} from 'primeng/table';
@@ -19,7 +19,11 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SplitterModule } from "primeng/splitter";
 import {BadgeModule} from 'primeng/badge';
 import {CarouselModule} from 'primeng/carousel';
+import { InputNumberModule } from "primeng/inputnumber";
+import {SpeedDialModule} from 'primeng/speeddial';
+import {ImageModule} from 'primeng/image';
 
+import { AuthGuard } from './jwt/auth.guard';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +37,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { JwtInterceptor } from './jwt/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,7 +50,6 @@ import { OrdersComponent } from './pages/orders/orders.component';
     ProductsComponent,
     CartComponent,
     OrdersComponent
-    
   ],
   imports: [
     BrowserModule,
@@ -67,9 +71,21 @@ import { OrdersComponent } from './pages/orders/orders.component';
     ToggleButtonModule,
     SplitterModule,
     BadgeModule,
-    CarouselModule
+    CarouselModule,
+    InputNumberModule,
+    SpeedDialModule,
+    ImageModule
   ],
-  providers: [ConfirmationService],
+  providers: [
+    MessageService,
+    ConfirmationService,
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+  }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

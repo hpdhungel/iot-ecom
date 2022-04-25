@@ -2,64 +2,65 @@
 <p-messages [value]="msgs"></p-messages>
 
 <button pButton type="button" (click)="showForm()" label="Add Product" class="p-button-help"></button>
-
 <p-dialog [(visible)]="showProductForm" [modal]="true">
-    <p-card class='showForm()'>
-        <form [formGroup]="productForm">
-            <span class="p-float-label">
-                <input formControlName="name" id="float-input" pInputText placeholder="Title">
-                <label for="float-input">Title</label>
-            </span>
-            <br />
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText placeholder="Description" formControlName="description">
-                <label for="float-input">Description</label>
-            </span>
-            <br />
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText placeholder="Price" formControlName="price">
-                <label for="float-input">Price</label>
-            </span>
-            <br />
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText placeholder="Quantity" formControlName="quantity">
-                <label for="float-input">Quantity</label>
-            </span>
-            <br />
-            <button *ngIf="!updateProductForm" pButton type="button" (click)="addProduct()" label="Create"
-                class="p-button-help"></button>
-            <button *ngIf="updateProductForm" pButton type="button" (click)="updateProduct()" label="Update"
-                class="p-button-help"></button>
-        </form>
-    </p-card>
+
+    <form [formGroup]="productForm">
+        <br />
+        <span class="p-float-label">
+            <input formControlName="name" id="float-input" pInputText placeholder="Title">
+            <label for="float-input">Title</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText placeholder="Image URL" formControlName="imgUrl">
+            <label for="float-input">Image Url</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+            <textarea for="float-des" rows="5" cols="30" formControlName="description" pInputTextarea
+                autoResize="autoResize"></textarea>
+            <label for="float-des">Description</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText placeholder="Price" formControlName="price">
+            <label for="float-input">Price</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText placeholder="Quantity" formControlName="quantity">
+            <label for="float-input">Quantity</label>
+        </span>
+        <br />
+        <button *ngIf="!updateProductForm" pButton type="button" (click)="addProduct()" label="Create"
+            class="p-button-help"></button>
+        <button *ngIf="updateProductForm" pButton type="button" (click)="updateProduct()" label="Update"
+            class="p-button-help"></button>
+    </form>
 </p-dialog>
 
-<div class="card">
-    <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" layout="grid">
-        <ng-template let-product pTemplate="gridItem">
-            <div class="p-col-12 p-md-4">
-                <div class="product-grid-item card">
-                    <div class="product-grid-item-content">
-                        <div class="product-name">{{product.name}}</div>
-                        <div class="product-description">{{product.description}}</div>
-                        <span class="product-price">${{product.price}}</span>
-                    </div>
-                    <div class="product-grid-item-bottom">
-                        <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.id)"></p-button>
-                        <p-button icon="pi pi-pencil" (click)="showUpdateForm(product)"></p-button>
-                        <p-button icon="pi pi-trash" (click)="deleteProduct(product.id)"></p-button>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-    </p-dataView>
-</div>
-
+<p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" layout="grid">
+    <ng-template let-product pTemplate="gridItem">
+        <p-card header="{{product.name}}" subheader="${{product.price}}"
+            [style]="{width: '360px', 'margin-left':'10px'}" styleClass="p-card-shadow">
+            <ng-template pTemplate="header">
+                <img alt="Card" src="{{product.img_url}}">
+            </ng-template>
+            <p>{{product.description | slice:0:100 }}... </p>
+            <ng-template pTemplate="footer">
+                <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.id)"></p-button>
+                <p-button icon="pi pi-pencil" (click)="showUpdateForm(product)" [style]="{'margin-left': '.5em'}">
+                </p-button>
+                <p-button icon="pi pi-trash" (click)="deleteProduct(product.product_id)"
+                    [style]="{'margin-left': '.5em'}"></p-button>
+            </ng-template>
+        </p-card>
+    </ng-template>
+</p-dataView>
 <p-dialog header={{messageTitle}} [(visible)]="createProductModel" [style]="{width: '50vw'}" [modal]="true"
     [baseZIndex]="10000">
     <p>{{message}}</p>
-    <button pButton type="button" (click)="goToCard()" label="Go to Cart"
-    class="p-button-help"></button>
+    <button pButton type="button" (click)="goToCard()" label="Go to Cart" class="p-button-help"></button>
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>

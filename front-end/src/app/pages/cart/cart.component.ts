@@ -1,3 +1,4 @@
+import { NullVisitor } from '@angular/compiler/src/render3/r3_ast';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from './services/cart.service';
@@ -13,20 +14,20 @@ export class CartComponent implements OnInit {
 
   cartProducts: any
   user: any
-
+  disable: boolean
   userId: number
   total: number = 0
   checkoutTotalprice:number =0
   removeItem: boolean = false
   ngOnInit(): void {
     this.getFromCart()
+   
   }
 checkout(){
   for (let i = 0; i < this.cartProducts.length; i++) {
     let tot = parseInt(this.cartProducts[i].price)
     this.checkoutTotalprice = this.checkoutTotalprice+tot
   }
-  console.log(this.total)
   this.cartService.checkout(this.user.id, this.cartProducts, this.total).subscribe((data) => {
     this.router.navigate(['/orders'])
     this.checkoutTotalprice =0
@@ -34,6 +35,11 @@ checkout(){
 
 }
 
+disabled(){
+  if(this.cartProducts.size===0){
+    this.disable = false
+  }
+}
   totalPrice() {
     if (this.removeItem) {
       this.removeItem = false
@@ -47,16 +53,16 @@ checkout(){
         this.total = this.total + parseInt(tot)
       }
     }
-
   }
 
   getFromCart() {
     this.user = JSON.parse(window.localStorage.getItem('User'))
-    console.log(this.user)
     this.userId = this.user.id
     this.cartService.getFromCart(this.user.id).subscribe((data) => {
+      
       this.cartProducts = data
       this.totalPrice()
+    
     }),
       (error) => {
         console.log(error)
@@ -69,10 +75,9 @@ checkout(){
       this.getFromCart()
       this.removeItem = true
     }),
-      (error) => {
-        console.log(error)
-      }
-
+    (error) => {
+      console.log(error)
+    }
   }
 
 }

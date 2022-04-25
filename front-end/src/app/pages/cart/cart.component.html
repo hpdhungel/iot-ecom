@@ -26,6 +26,8 @@
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
+            <th>quantity</th>
+
             <th>Remove</th>
         </tr>
     </ng-template>
@@ -34,6 +36,8 @@
             <td>{{product.name}}</td>
             <td>{{product.description}}</td>
             <td>{{product.price}}</td>
+            <td>{{product.quantity}}</td>
+
             <td>
                 <p-button icon="pi pi-trash"  (click)="removeFromCart(product.product_id, product.id)" ></p-button>
             </td>
@@ -47,7 +51,7 @@
 <p-card>
     <td>Total:{{total}}</td>
 
-    <button pButton type="button" label="Checkout" class="p-button-warning" (click)="checkout()"></button>
+    <button pButton [disabled]="disabled()" type="button" label="Checkout" class="p-button-warning" (click)="checkout()"></button>
 
 </p-card>
 

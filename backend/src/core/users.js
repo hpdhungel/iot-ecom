@@ -1,8 +1,7 @@
 require('dotenv').config()
 const { Client } = require('pg')
-const { rows } = require('pg/lib/defaults')
 const { TABLE_NAME } = require('../constants/constants')
-
+const jwtoken = require('jsonwebtoken');
 
 const options = {
     port: process.env.DB_PORT,
@@ -12,7 +11,6 @@ const options = {
 
 async function getAllUsers() {
     const client = new Client(options)
-
     try {
         client.connect()
         const data = await client.query(`SELECT * FROM ${TABLE_NAME.users}`)
@@ -44,8 +42,7 @@ async function createUser(resp, req) {
                 }
             })
         });
-    }
-    
+    } 
     catch (err) {
         console.log(err)
     }
@@ -72,6 +69,8 @@ async function updateUser(resp, req) {
     }
 }
 
+
+
 function loginUser(resp, req) {
     const client = new Client(options);
     client.connect(err => {
@@ -80,18 +79,21 @@ function loginUser(resp, req) {
         } else {
            
             const data = {
-                text: 'SELECT id, name, password, email, street, city, state, zip FROM users WHERE email = $1',
+                text: 'SELECT user_id, name, password, email, street, city, state, zip FROM users WHERE email = $1',
                 values: [req.email]
             }
 
             client.query(data, (err, res) => {
-                var user_id = parseInt(res.rows[0].id)
+                var user_id = parseInt(res.rows[0].user_id)
                 if (err) {      
                     console.log(err)
                 }
                 if (res.rows[0] != null && req.password === res.rows[0].password ) {
-                    resp(user_id)
-            
+                    const key = process.env.JWT_KEY;
+                    const token = jwtoken.sign({}, key, {
+                        expiresIn: '7day'
+                    })
+                    resp({id:user_id, token})
                 } else {
                     resp(false)
                     console.log('err')
@@ -99,7 +101,6 @@ function loginUser(resp, req) {
             });
         }
     });
-
 }
 
 module.exports = {

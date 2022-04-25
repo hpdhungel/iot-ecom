@@ -1,12 +1,13 @@
 CREATE TABLE IF NOT EXISTS users (
-  ID SERIAL PRIMARY KEY,
+  user_id SERIAL PRIMARY KEY,
   name varchar(100) NOT NULL,
   password varchar(100) NOT NULL,
   email varchar(100) NOT NULL,
   street varchar(100) NOT NULL,
   city varchar(50) NOT NULL,
   state varchar(20) NOT NULL,
-  zip INT NOT NULL
+  zip INT NOT NULL,
+  user_role BOOLEAN DEFAULT 0
 );
 
 
@@ -18,37 +19,29 @@ VALUES
 
 
 CREATE TABLE IF NOT EXISTS products (
-    ID SERIAL PRIMARY KEY,
-    name VARCHAR(30) NOT NULL,
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
     description VARCHAR(255),
     price NUMERIC(6,2) NOT NULL,
-    quantity NUMERIC(6) NOT NULL
+    quantity NUMERIC(6) NOT NULL,
+    img_url varchar NOT NULL DEFAULT 'https://lahousing.lacity.org/AAHR/Images/No_Image_Available.jpg'
 );
-
 
 INSERT INTO products (name, description, price, quantity) 
 VALUES 
 ('Inspiron 15 Laptop', 'The latest 11th Generation Intel® Core™ processors deliver incredible', 10.00, 10),
 ('Macbook 16"', 'The latest 11th Generation Intel® Core™ processors deliver incredible', 10.00, 10)
 
-
-CREATE TABLE IF NOT EXISTS carts (
-  ID SERIAL PRIMARY KEY,
-  user_id INT references users(id),
-  product_id INT references products(id)
-)
- 
-
- CREATE TABLE IF NOT EXISTS carts (
-  id SERIAL PRIMARY KEY,
-  user_id integer REFERENCES users(id),
-  product_id integer REFERENCES products(id)
+ CREATE TABLE IF NOT EXISTS cart (
+  cart_id SERIAL PRIMARY KEY,
+  user_id integer REFERENCES users(user_id)  NOT NULL,
+  product_id integer REFERENCES products(product_id) NOT NULL,
+  quantity integer  NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS transaction (
-  id SERIAL PRIMARY KEY,
-  user_id integer REFERENCES users(id),
-
+  transaction_id SERIAL PRIMARY KEY,
+  user_id integer REFERENCES users(user_id),
   subtotal integer,
   tax integer,
   total integer,
