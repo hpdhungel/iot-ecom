@@ -19,6 +19,7 @@ export class CartComponent implements OnInit {
   total: number = 0
   checkoutTotalprice:number =0
   removeItem: boolean = false
+  showQuantityModel: boolean = false
   ngOnInit(): void {
     this.getFromCart()
    
@@ -34,6 +35,10 @@ checkout(){
   })
 
 }
+onClickEdit(){
+  this.showQuantityModel = true
+}
+
 
 disabled(){
   if(this.cartProducts.size===0){
@@ -44,13 +49,11 @@ disabled(){
     if (this.removeItem) {
       this.removeItem = false
       for (let i = 0; i < this.cartProducts.length; i++) {
-        let tot = this.cartProducts[i].price
-        this.total = this.total - parseInt(tot)
+        this.total = this.total - this.cartProducts[i].price * this.cartProducts[i].quantity
       }
     } else {
       for (let i = 0; i < this.cartProducts.length; i++) {
-        let tot = this.cartProducts[i].price
-        this.total = this.total + parseInt(tot)
+        this.total = this.total + this.cartProducts[i].price * this.cartProducts[i].quantity
       }
     }
   }
@@ -68,7 +71,17 @@ disabled(){
         console.log(error)
       }
   }
-
+  editQuantity(product_id, cart_id){
+    let quantity = 1
+    this.cartService.editQuantity(this.userId, product_id, cart_id, quantity).subscribe((data) => {
+      console.log(data)
+      this.getFromCart()
+      this.removeItem = true
+    }),
+    (error) => {
+      console.log(error)
+    }
+  }
   removeFromCart(product_id, cart_id) {
     this.cartService.removeCart(this.userId, product_id, cart_id).subscribe((data) => {
       console.log(data)

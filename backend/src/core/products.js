@@ -29,7 +29,6 @@ function getAllProducts(list) {
     })
 }
 
-
 async function createNewProduct(callback, req) {
 const client = new Client(options);
 
@@ -37,7 +36,6 @@ const client = new Client(options);
     let quantity = parseInt(req.quantity);
 
     try {
-        console.log(req)
         client.connect()
         const data = {
             text: 'INSERT INTO products(name, description, img_url, price, quantity ) VALUES($1, $2, $3, $4, $5) RETURNING *;',
@@ -89,7 +87,6 @@ async function deleteProduct(callback, req) {
 
 async function updateProduct(callback, req) {
     const client = new Client(options);
-    console.log(req)
     price = parseInt(req.price)
     quantity = parseInt(req.quantity)
     id = parseInt(req.product_id)

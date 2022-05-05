@@ -22,6 +22,7 @@ const removeCart = require('./src/routes/cart/removeCart');
 
 const checkout = require('./src/routes/transaction/checkout');
 const order = require('./src/routes/transaction/orders');
+const editQuantity = require('./src/routes/cart/editQuantity');
 
 
 const app = express();
@@ -43,6 +44,7 @@ app.post('/api/v1/cart',authenticateToken, addToCart);
 app.post('/api/v1/remove-cart', authenticateToken, removeCart);
 
 app.get('/api/v1/carts/:userId', getAllFromCart)
+app.post('/api/v1/edit-quantity', editQuantity)
 
 app.post('/api/v1/checkout', authenticateToken, checkout)
 app.get('/api/v1/orders/:userId', authenticateToken, order)

@@ -10,14 +10,12 @@ function authenticateToken(req, res, next) {
     jwt.verify(token, process.env.JWT_KEY, (err) => {
       console.log(err)
   
-      if (err) console.log(err+ 'erroo')
-  
-  
+      if (err) console.log(err)
       next()
     })
   }
 
 
-  module.exports = {
+module.exports = {
    authenticateToken
 }

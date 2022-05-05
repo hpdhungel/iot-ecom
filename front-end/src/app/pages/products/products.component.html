@@ -48,7 +48,7 @@
             </ng-template>
             <p>{{product.description | slice:0:100 }}... </p>
             <ng-template pTemplate="footer">
-                <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.id)"></p-button>
+                <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.product_id)"></p-button>
                 <p-button icon="pi pi-pencil" (click)="showUpdateForm(product)" [style]="{'margin-left': '.5em'}">
                 </p-button>
                 <p-button icon="pi pi-trash" (click)="deleteProduct(product.product_id)"

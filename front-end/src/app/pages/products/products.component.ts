@@ -95,7 +95,7 @@ export class ProductsComponent implements OnInit {
 
   addToCart(productId){
     let data = JSON.parse(window.localStorage.getItem('User'))
-    
+    console.log(data.id)
     if(!window.localStorage.getItem('User')){
       this.router.navigate(['login'])
     }

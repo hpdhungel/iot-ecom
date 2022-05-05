@@ -27,7 +27,6 @@
             <th>Description</th>
             <th>Price</th>
             <th>quantity</th>
-
             <th>Remove</th>
         </tr>
     </ng-template>
@@ -35,8 +34,9 @@
         <tr>
             <td>{{product.name}}</td>
             <td>{{product.description}}</td>
-            <td>{{product.price}}</td>
-            <td>{{product.quantity}}</td>
+            <td>{{product.price * product.quantity}}</td>
+            <td>{{product.quantity}}   <p-button icon="pi pi-pencil"  (click)="editQuantity(product.product_id, product.id)" ></p-button>
+            </td>
 
             <td>
                 <p-button icon="pi pi-trash"  (click)="removeFromCart(product.product_id, product.id)" ></p-button>

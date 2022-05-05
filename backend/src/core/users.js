@@ -35,7 +35,12 @@ async function createUser(resp, req) {
             if (err) {
                 throw err;
             }
-            resp(res.rows[0].id);
+
+            const key = process.env.JWT_KEY;
+            const token = jwtoken.sign({}, key, {
+                expiresIn: '7day'
+            })
+            resp({id:res.rows[0].user_id, token})
             client.end(err=>{
                 if(err){
                     console.log(err)
