@@ -22,6 +22,13 @@ import {CarouselModule} from 'primeng/carousel';
 import { InputNumberModule } from "primeng/inputnumber";
 import {SpeedDialModule} from 'primeng/speeddial';
 import {ImageModule} from 'primeng/image';
+import {PanelModule} from 'primeng/panel';
+import {RatingModule} from 'primeng/rating';
+import {RippleModule} from 'primeng/ripple';
+import {OrderListModule} from 'primeng/orderlist';
+import {TimelineModule} from 'primeng/timeline';
+
+
 
 import { AuthGuard } from './jwt/auth.guard';
 
@@ -38,6 +45,9 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { JwtInterceptor } from './jwt/jwt.interceptor';
+import { ProductsComponent1 } from './pages/products copy/products.component';
+import { ProductDetailsComponent } from './pages/product-details/product-details.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +59,10 @@ import { JwtInterceptor } from './jwt/jwt.interceptor';
     SignupComponent,
     ProductsComponent,
     CartComponent,
-    OrdersComponent
+    OrdersComponent,
+    ProductsComponent1,
+    ProductDetailsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +87,12 @@ import { JwtInterceptor } from './jwt/jwt.interceptor';
     CarouselModule,
     InputNumberModule,
     SpeedDialModule,
-    ImageModule
+    ImageModule,
+    RatingModule,
+    PanelModule,
+    RippleModule,
+    OrderListModule,
+    TimelineModule
   ],
   providers: [
     MessageService,

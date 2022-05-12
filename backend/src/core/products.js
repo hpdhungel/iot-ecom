@@ -5,9 +5,8 @@ const { TABLE_NAME } = require('../constants/constants')
 const options = {
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
+    database: process.env.DB_DATABASE
 }
-
 function getAllProducts(list) {
     const client = new Client(options);
     client.connect(err => {
@@ -16,9 +15,11 @@ function getAllProducts(list) {
         } else {
             client.query('SELECT * FROM products;', (err, res) => {
                 if (err) {
-                    throw err;
-                }
+                    console.log( err.stack);
+                }else{
                 list(res.rows);
+                    
+                }
                 client.end(err => {
                     if(err){
                         console.log('unable to close the connection' + err)
@@ -28,6 +29,38 @@ function getAllProducts(list) {
         }
     })
 }
+
+
+
+function getProductDetails(cb, productId) {
+    const client = new Client(options);
+    console.log(productId)
+    try {
+        client.connect()
+        const data = {
+            text: 'SELECT * FROM products where product_id=$1',
+            values: [productId]
+        }
+        client.query(data, (err, res) => {
+            if (err) {
+                console.log( err.stack);
+
+            }else{
+                cb(res.rows);
+            }
+         
+            client.end(err=>{
+                if(err){
+                    console.log(err)
+                }
+            })
+        });
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
 
 async function createNewProduct(callback, req) {
 const client = new Client(options);
@@ -43,7 +76,7 @@ const client = new Client(options);
         }
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
             }
             callback(res.rows);
             client.end(err=>{
@@ -70,7 +103,7 @@ async function deleteProduct(callback, req) {
         }
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
             }
             callback(res.rows);
             client.end(err=>{
@@ -99,7 +132,7 @@ async function updateProduct(callback, req) {
         }
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
             }
             callback(res.rows);
             client.end(err=>{
@@ -119,5 +152,6 @@ module.exports = {
   getAllProducts,
   createNewProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getProductDetails
 }

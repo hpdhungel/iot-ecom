@@ -1,24 +1,30 @@
 <app-navbar></app-navbar>
+<div class="center" style="max-width: 80rem;">
 
-<p-table [value]="orders" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>OrderId</th>
-            <th>Product Info</th>
-            <th>Total</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-order>
-        <tr>
-            <td>{{order.id}}</td>
-            <td>
-                <span *ngFor="let p of order.products.product">
-                    Name: {{p.name}}
-                    Price: {{p.price}}
-                    <br />
-                </span>
-            </td>
-            <td>${{order.total}}.00</td>
-        </tr>
-    </ng-template>
-</p-table>
+    <div *ngFor="let order of orders" class="card">
+        <h3>Order Number:{{order.transaction_id}} </h3>
+
+        <td>
+            <span *ngFor="let product of order.products.product">
+
+                <div>
+                    <div class="product-grid-item-top">
+                        <div class="product-name">{{product.name}}</div>
+                        <span class="product-price">Quantity: {{product.quantity}}</span>
+                        <br />
+                        <span class="product-price">Price: ${{product.price * product.quantity}}.00</span>
+                    </div>
+                </div>
+            </span>
+        </td>
+        <td>
+            <!-- <p-timeline [value]="shippingStatus" layout="horizontal">
+                <ng-template pTemplate="content" let-event>
+                    {{event.status}}
+                </ng-template>
+            </p-timeline> -->
+        </td>
+        <h3>Total:${{order.total}}.00</h3>
+
+    </div>
+</div>

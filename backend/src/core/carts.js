@@ -5,22 +5,25 @@ const { TABLE_NAME } = require('../constants/constants');
 const options = {
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
+    database: process.env.DB_DATABASE
 }
+
 
 async function getAllFromCart(callback, userId) {
     const client = new Client(options);
     try {
         client.connect()
         const data = {
-            text: 'SELECT cart.cart_id, cart.quantity, products.product_id as product_id, products.name, products.description, products.price FROM products INNER JOIN cart ON cart.product_id = products.product_id WHERE cart.user_id=$1',
+            text: 'SELECT cart.cart_id, cart.quantity, products.product_id as product_id, products.img_url, products.name, products.description, products.price FROM products INNER JOIN cart ON cart.product_id = products.product_id WHERE cart.user_id=$1',
             values: [userId]
         }
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
+            }else{
+                callback(res.rows);
+
             }
-            callback(res.rows);
             client.end(err => {
                 if (err) {
                     console.log(err)
@@ -36,12 +39,10 @@ async function getAllFromCart(callback, userId) {
 
 async function addToCart(callback, req) {
     const client = new Client(options);
-   
+   console.log(req)
     let userId = req.user_id
     let productId = req.product_id
-    let quantity = 2+1
-    console.log(userId, productId)
-
+    let quantity = req.quantity
 
     try {
         client.connect()
@@ -54,7 +55,7 @@ async function addToCart(callback, req) {
 , 
      (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
             }
             callback(res.rows);
             console.log(res.rows)
@@ -73,6 +74,7 @@ async function addToCart(callback, req) {
 }
 
 
+
 async function removeCart(callback, request) {
     const client = new Client(options);
     console.log(request)
@@ -86,7 +88,7 @@ async function removeCart(callback, request) {
         }
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
             }
             callback(res.rows);
             client.end(err => {
@@ -116,9 +118,11 @@ async function editQuantity(callback, req) {
        
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
+            } else{
+                callback(res.rows);
+
             }
-            callback(res.rows);
             client.end(err => {
                 if (err) {
                     console.log(err)

@@ -13,9 +13,36 @@ export class NavbarComponent implements OnInit {
   items: MenuItem[];
 
   logoutButton:boolean = true;
+  acc:boolean=true
+  
+
+  account: MenuItem = {
+    label:'Account',
+    icon:'pi pi-fw pi-user',
+    items:[
+        {
+          label:'Profile',
+          icon:'pi pi-book',
+          routerLink: ['/user']
+        },
+        {
+            label:'Orders',
+            icon:'pi pi-book',
+            routerLink: ['/orders']
+        },
+        {
+            label:'Cart',
+            icon:'pi pi-shopping-cart',
+            routerLink: ['/cart']
+        }
+    ]
+}
 
   ngOnInit(): void {
     this.hideLogout(),
+
+    this.account.visible = this.acc;
+
     this.items = [
       {
           label:'Dashboard',
@@ -28,23 +55,8 @@ export class NavbarComponent implements OnInit {
           icon:'pi pi-table',
           routerLink: ['/products']
       },
-      {
-
-        label:'Account',
-        icon:'pi pi-fw pi-user',
-        items:[
-            {
-                label:'Orders',
-                icon:'pi pi-book',
-                routerLink: ['/orders']
-            },
-            {
-                label:'Cart',
-                icon:'pi pi-shopping-cart',
-                routerLink: ['/cart']
-            }
-        ]
-    }
+      this.account
+      
   ];
   }
 
@@ -56,8 +68,11 @@ export class NavbarComponent implements OnInit {
     var user = window.localStorage.getItem('User');
     if (user==null){
       this.logoutButton= false
+      this.acc = false
     } else {
       this.logoutButton= true
+      this.acc = true
+      
     }
   }
 

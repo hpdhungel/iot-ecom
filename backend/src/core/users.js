@@ -6,7 +6,7 @@ const jwtoken = require('jsonwebtoken');
 const options = {
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
+    database: process.env.DB_DATABASE
 }
 
 async function getAllUsers() {
@@ -18,7 +18,7 @@ async function getAllUsers() {
         return data.rows
     }
     catch (err) {
-        throw err
+        console.log( err.stack);
     }
 }
 
@@ -33,7 +33,7 @@ async function createUser(resp, req) {
         }
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
             }
 
             const key = process.env.JWT_KEY;
@@ -64,7 +64,7 @@ async function updateUser(resp, req) {
         }
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
             }
             resp(res.rows);
         });
@@ -74,8 +74,6 @@ async function updateUser(resp, req) {
     }
 }
 
-
-
 function loginUser(resp, req) {
     const client = new Client(options);
     client.connect(err => {
@@ -84,11 +82,12 @@ function loginUser(resp, req) {
         } else {
            
             const data = {
-                text: 'SELECT user_id, name, password, email, street, city, state, zip FROM users WHERE email = $1',
+                text: 'SELECT user_id, name, password, email, street, city, state, zip, user_role FROM users WHERE email = $1',
                 values: [req.email]
             }
 
             client.query(data, (err, res) => {
+               console.log(res.rows[0])
                 var user_id = parseInt(res.rows[0].user_id)
                 if (err) {      
                     console.log(err)
@@ -98,7 +97,7 @@ function loginUser(resp, req) {
                     const token = jwtoken.sign({}, key, {
                         expiresIn: '7day'
                     })
-                    resp({id:user_id, token})
+                    resp({id:user_id, admin: res.rows[0].user_role, name: res.rows[0].name, email:res.rows[0].email, token})
                 } else {
                     resp(false)
                     console.log('err')
@@ -108,9 +107,40 @@ function loginUser(resp, req) {
     });
 }
 
+async function getUserById(callback, userId) {
+    const client = new Client(options);
+    try {
+        client.connect()
+        const data = {
+            text: 'SELECT * FROM users WHERE user_id=$1',
+            values: [userId]
+        }
+        client.query(data, (err, res) => {
+            if (err) {
+                console.log( err.stack);
+
+            }else{
+                let data = JSON.parse(JSON.stringify(res.rows))
+                callback(data);
+            }
+         
+            client.end(err=>{
+                if(err){
+                    console.log(err)
+                }
+            })
+        });
+    }
+    catch (err) {
+        console.log(err)
+    }
+
+}
+
 module.exports = {
     getAllUsers,
     createUser,
     updateUser,
-    loginUser
+    loginUser,
+    getUserById
 }

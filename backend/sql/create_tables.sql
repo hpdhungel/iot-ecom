@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   city varchar(50) NOT NULL,
   state varchar(20) NOT NULL,
   zip INT NOT NULL,
-  user_role BOOLEAN DEFAULT 0
+  user_role BOOLEAN 
 );
 
 
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS products (
     product_id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     description VARCHAR(255),
-    price NUMERIC(6,2) NOT NULL,
+    price NUMERIC(8) NOT NULL,
     quantity NUMERIC(6) NOT NULL,
     img_url varchar NOT NULL DEFAULT 'https://lahousing.lacity.org/AAHR/Images/No_Image_Available.jpg'
 );
@@ -47,3 +47,7 @@ CREATE TABLE IF NOT EXISTS transaction (
   total integer,
   products jsonb
 );
+
+
+
+docker run -p 5050:80 -e "PGADMIN_DEFAULT_EMAIL=hpdhungel@gmail.com" -e "PGADMIN_DEFAULT_PASSWORD=password" -d  dpage/pgadmin4

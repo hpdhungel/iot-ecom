@@ -5,22 +5,20 @@ const { TABLE_NAME } = require('../constants/constants')
 const options = {
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
+    database: process.env.DB_DATABASE
 }
-
 
 async function checkout(callback, req) {
     const client = new Client(options);
 
     let product =  req.products
-
-    console.log(product)
     let userId = parseInt(req.user_id)
     let total = parseInt(req.total)
+
     try {
         client.connect()
         const removeAllFromCart = {
-            text: 'DELETE FROM carts WHERE user_id=$1 RETURNING *;',
+            text: 'DELETE FROM cart WHERE user_id=$1 RETURNING *;',
             values: [userId]
         }
 
@@ -30,20 +28,22 @@ async function checkout(callback, req) {
         }
         client.query(addToTransaction, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
             }
             callback(res.rows)
 
         });
-
+        
         client.query(removeAllFromCart, () => {
-            console.log('done')
+            console.log('remove from cart done')
             client.end(err => {
+                console.log('client close')
                 if (err) {
                     console.log(err)
                 }
             })
         });
+        
 
 
     }
@@ -54,7 +54,6 @@ async function checkout(callback, req) {
 
 async function getAllFromOrder(callback, userId) {
     const client = new Client(options);
-    console.log(userId)
     try {
         client.connect()
         const data = {
@@ -63,10 +62,13 @@ async function getAllFromOrder(callback, userId) {
         }
         client.query(data, (err, res) => {
             if (err) {
-                throw err;
+                console.log( err.stack);
+
+            }else{
+                let data = JSON.parse(JSON.stringify(res.rows))
+                callback(data);
             }
-            let data = JSON.parse(JSON.stringify(res.rows))
-            callback(data);
+         
             client.end(err=>{
                 if(err){
                     console.log(err)

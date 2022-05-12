@@ -17,7 +17,7 @@
 
 
 </p-card> -->
-
+<!-- 
 
 <p-table [value]="cartProducts" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
 
@@ -54,5 +54,83 @@
     <button pButton [disabled]="disabled()" type="button" label="Checkout" class="p-button-warning" (click)="checkout()"></button>
 
 </p-card>
+ -->
 
 
+ <p-dialog [(visible)]="showQuantityModel" [modal]="true">
+
+    <div class="field col-12 md:col-3">
+        <label for="horizontal">Quantity: </label>
+        <p-inputNumber
+        [(ngModel)]="currentQuantity"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        spinnerMode="horizontal"
+        [step]="1"
+    
+        incrementButtonIcon="pi pi-angle-right"
+        decrementButtonIcon="pi pi-angle-left"
+        [min]="1"
+ 
+        (onInput)="changeQuantity($event.value)"
+
+      >
+      </p-inputNumber>
+    
+    </div>
+    
+ </p-dialog>
+
+
+
+<br>
+
+<div>
+ 
+<p-orderList [value]="cartProducts" [listStyle]="{'max-height':'30rem'}" header="Your Cards"  >
+    <ng-template let-product pTemplate="item">
+        <div class="product-item">
+            <div class="image-container">
+                    <img src="{{product.img_url}}" [alt]="product.name" class="product-image" />
+            </div>
+            <div class="product-list-detail">
+                <h5 class="mb-2">{{product.name}}</h5>
+                <i class="pi pi-tag product-category-icon"></i>
+                <span class="product-category">{{product.category}}</span>
+                <td>{{product.quantity}}   <p-button icon="pi pi-pencil"  (click)="showQuantity(product.quantity, product.product_id, product.id)" ></p-button>
+            </div>
+
+
+
+
+            <div class="product-list-action">
+                <h6 class="mb-2">${{product.price * product.quantity}}</h6>
+                <span [class]="'product-badge status-' + product.inventoryStatus">{{product.inventoryStatus}}</span>
+
+                <p-button icon="pi pi-trash"  (click)="removeFromCart(product.product_id, product.cart_id)" ></p-button>
+
+            </div>
+
+        </div>
+    </ng-template>
+
+</p-orderList>
+    
+    
+<p-card [ngStyle]="{width:'80%'}">
+    <div class="product-list-action checkout">
+        <div>
+            Total:{{total}}
+        </div>
+    </div>
+    <br/>
+    <div class="checkout">
+
+        <button pButton [disabled]="disabled()" type="button" label="Checkout" class="p-button-warning" (click)="checkout()"></button>
+    
+    </div>
+   
+</p-card>
+
+
+</div>

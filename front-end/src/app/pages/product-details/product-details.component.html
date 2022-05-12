@@ -1,0 +1,24 @@
+<app-navbar></app-navbar>
+
+<div class="product-grid-item card">
+    <div class="product-grid-item-top">
+       
+        <div>
+            <!-- <i class="pi pi-tag product-category-icon"></i> -->
+            <span class="product-category">{{product.category}}</span>
+        </div>
+        <span [class]="'product-badge status-' + product.inventoryStatus">{{product.inventoryStatus}}</span>
+    </div>
+    <div class="product-grid-item-content">
+        <img style="height: 300px; width: 100%; object-fit: contain; " [src]="product.img_url" [alt]="product.name" />
+        <div class="product-name">{{product.name}}</div>
+        <div class="product-description">{{product.description }}...</div>
+        <!-- <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating> -->
+    </div>
+    <div class="product-grid-item-bottom">
+        <span class="product-price">${{product.price}}</span>
+        <!-- <p-button *ngIf="admin" icon="pi pi-pencil" (click)="showUpdateForm(product)" [style]="{'margin-left': '.5em'}"></p-button> -->
+        <p-button icon="pi pi-shopping-cart" label="Add to Cart" (click)="addToCart(product.product_id)" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>
+    
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<app-navbar></app-navbar>
+
+
+<div class="center" style="max-width: 80rem;">
+ 
+    <p-card>    
+        <form [formGroup]="userForm">
+
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input type="text" pInputText placeholder="{{user.name}}" value="{{user.name}}" [readonly]="!this.edit" [disabled]="!this.edit" >         
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <input type="text" pInputText value="{{user.email}}" [readonly]="!this.edit" [disabled]="!this.edit" >         
+                </div>
+            </div>
+        </div>   
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <input type="text" pInputText value="{{user.street}}" [readonly]="!this.edit" [disabled]="!this.edit" >         
+                </div>
+            </div>
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <input type="text" pInputText value="{{user.city}}" [readonly]="!this.edit" [disabled]="!this.edit" >         
+                </div>
+            </div>
+        </div>    
+        <div class="grid p-fluid">
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <input type="text" pInputText value="{{user.state}}" [readonly]="!this.edit" [disabled]="!this.edit" >         
+                </div>
+            </div>
+            <div class="col-12 md:col-4">
+                <div class="p-inputgroup">
+                    <input type="text" pInputText value="{{user.zip}}" [readonly]="!this.edit" [disabled]="!this.edit" >         
+                </div>
+            </div>
+        
+        </div>    
+        </form>
+ 
+
+        <ng-template pTemplate="footer">
+<div>
+    <button pButton  *ngIf="!this.edit" type="button" label="Edit Profile" (click)="editProfile()" ></button>
+
+</div>
+<div>
+
+    <button pButton  *ngIf="this.edit" type="button" label="Cancel Edit" (click)="editProfile()" ></button>
+    <button pButton  *ngIf="this.edit" type="button" label="Update Profile" (click)="updateUser()"  style="margin-left: 5px;" >   </button>
+
+</div>
+
+
+        </ng-template>
+    </p-card>
+</div>

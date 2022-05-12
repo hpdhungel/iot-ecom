@@ -15,6 +15,12 @@ export class ProductService {
     return this.http.get(`${this.backendUrl}/api/v1/products`)
   }
 
+
+  getProductDetail(id:string){
+    return this.http.get(`${this.backendUrl}/api/v1/product/${id}`)
+
+  }
+
   createProduct(name:string, description:string,  imgUrl:string, price:number, quantity:number){
     return this.http.post(`${this.backendUrl}/api/v1/product`, {name, description, imgUrl, price, quantity })
   }
@@ -27,7 +33,7 @@ export class ProductService {
     return this.http.post(`${this.backendUrl}/api/v1/delete-product`, { id })
   }
 
-  addToCart(product_id:number, user_id:number){
-    return this.http.post(`${this.backendUrl}/api/v1/cart`, { product_id, user_id })
+  addToCart(product_id:number, user_id:number, quantity:number){
+    return this.http.post(`${this.backendUrl}/api/v1/cart`, { product_id, user_id, quantity })
   }
 }
