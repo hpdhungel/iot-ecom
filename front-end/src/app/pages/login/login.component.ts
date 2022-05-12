@@ -10,20 +10,20 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private loginService:LoginService,  private router: Router) {  }
+  constructor(private loginService:LoginService, private router: Router) {  }
   ngOnInit() {
   }
 
   loginForm = new FormGroup({
-    email: new FormControl('hpd@example.com', [Validators.required]),
-    password: new FormControl('hari', [Validators.required])  
+    email: new FormControl('hpdhungel@gmail.com', [Validators.required]),
+    password: new FormControl('password', [Validators.required])  
   }); 
 
-  get userEmail(): any {
+  get email(): any {
     return this.loginForm.get('email');
   }
 
-  get userPassword(): any {
+  get password(): any {
     return this.loginForm.get('password');
   }
 
@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
       if(query!=false){
         console.log(query)
         try {
+          let token = query
           localStorage.setItem('User', JSON.stringify(query));
         } catch (e) {
           console.error('Error saving to localStorage', e);

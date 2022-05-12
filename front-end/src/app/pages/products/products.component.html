@@ -1,65 +1,132 @@
 <app-navbar></app-navbar>
 <p-messages [value]="msgs"></p-messages>
 
-<button pButton type="button" (click)="showForm()" label="Add Product" class="p-button-help"></button>
-
+<button pButton *ngIf="admin" type="button" (click)="showForm()" label="Add Product" class="p-button-help"></button>
 <p-dialog [(visible)]="showProductForm" [modal]="true">
-    <p-card class='showForm()'>
-        <form [formGroup]="productForm">
-            <span class="p-float-label">
-                <input formControlName="name" id="float-input" pInputText placeholder="Title">
-                <label for="float-input">Title</label>
-            </span>
-            <br />
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText placeholder="Description" formControlName="description">
-                <label for="float-input">Description</label>
-            </span>
-            <br />
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText placeholder="Price" formControlName="price">
-                <label for="float-input">Price</label>
-            </span>
-            <br />
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText placeholder="Quantity" formControlName="quantity">
-                <label for="float-input">Quantity</label>
-            </span>
-            <br />
-            <button *ngIf="!updateProductForm" pButton type="button" (click)="addProduct()" label="Create"
-                class="p-button-help"></button>
-            <button *ngIf="updateProductForm" pButton type="button" (click)="updateProduct()" label="Update"
-                class="p-button-help"></button>
-        </form>
-    </p-card>
+
+    <form [formGroup]="productForm">
+        <br />
+        <span class="p-float-label">
+            <input formControlName="name" id="float-input" pInputText placeholder="Title">
+            <label for="float-input">Title</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText placeholder="Image URL" formControlName="imgUrl">
+            <label for="float-input">Image Url</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+            <textarea for="float-des" rows="5" cols="30" formControlName="description" pInputTextarea
+                autoResize="autoResize"></textarea>
+            <label for="float-des">Description</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText placeholder="Price" formControlName="price">
+            <label for="float-input">Price</label>
+        </span>
+        <br />
+        <span class="p-float-label">
+            <input id="float-input" type="text" pInputText placeholder="Quantity" formControlName="quantity">
+            <label for="float-input">Quantity</label>
+        </span>
+        <br />
+        <button *ngIf="!updateProductForm" pButton type="button" (click)="addProduct()" label="Create"
+            class="p-button-help"></button>
+        <button *ngIf="updateProductForm" pButton type="button" (click)="updateProduct()" label="Update"
+            class="p-button-help"></button>
+    </form>
 </p-dialog>
 
+<!-- <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" layout="grid">
+    <ng-template let-product pTemplate="gridItem">
+        <p-card header="{{product.name}}" subheader="${{product.price}}"
+            [style]="{width: '360px', 'margin-left':'10px'}" styleClass="p-card-shadow">
+            <ng-template pTemplate="header">
+                <img alt="Card" src="{{product.img_url}}">
+            </ng-template>
+            <p>{{product.description | slice:0:100 }}... </p>
+            <ng-template pTemplate="footer">
+                <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.product_id)"></p-button>
+                <p-button icon="pi pi-pencil" (click)="showUpdateForm(product)" [style]="{'margin-left': '.5em'}">
+                </p-button>
+                <p-button icon="pi pi-trash" (click)="deleteProduct(product.product_id)"
+                    [style]="{'margin-left': '.5em'}"></p-button>
+            </ng-template>
+        </p-card>
+    </ng-template>
+</p-dataView> -->
+<p-dialog header={{messageTitle}} [(visible)]="createProductModel" [style]="{width: '50vw'}" [modal]="true"
+    [baseZIndex]="10000">
+    <p>{{message}}</p>
+    <button pButton type="button" (click)="goToCard()" label="Go to Cart" class="p-button-help"></button>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+
 <div class="card">
-    <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" layout="grid">
-        <ng-template let-product pTemplate="gridItem">
-            <div class="p-col-12 p-md-4">
-                <div class="product-grid-item card">
-                    <div class="product-grid-item-content">
-                        <div class="product-name">{{product.name}}</div>
+    <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name"
+        [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+        <ng-template pTemplate="header">
+            <div class="flex flex-column md:flex-row md:justify-content-between">
+                <p-dropdown [options]="sortOptions" placeholder="Sort By Price" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
+                <span class="p-input-icon-left mb-2 md:mb-0">
+                    <i class="pi pi-search"></i>
+                    <input type="search" pInputText placeholder="Search by Name" (input)="dv.filter($event.target.value)">
+                </span>
+                <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+            </div>
+        </ng-template>
+
+
+        <ng-template let-product pTemplate="listItem">
+            <div class="col-12">
+                <div class="product-list-item">
+                    <img [src]="product.img_url" [alt]="product.name"/>
+                    <div class="product-list-detail">
+
+                        <div class="product-name" [routerLink]="['/product', product.product_id]">{{product.name}}</div>
                         <div class="product-description">{{product.description}}</div>
+                        <!-- <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating> -->
+                        <!-- <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.category}}</span> -->
+                    </div>
+                    <div class="product-list-action">
                         <span class="product-price">${{product.price}}</span>
+                        <p-button icon="pi pi-shopping-cart" label="Add to Cart" (click)="addToCart(product.product_id, product.name)" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>
+                        <span [class]="'product-badge status-' + product.inventoryStatus">{{product.inventoryStatus}}</span>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template let-product pTemplate="gridItem" (click)="productDetails(product.product_id)" >
+            <div class="col-12 md:col-4">
+                <div class="product-grid-item card" >
+                    <div class="product-grid-item-top">
+                       
+                        <div>
+                            <i class="pi pi-tag product-category-icon"></i>
+                            <span class="product-category">{{product.category}}</span>
+                           
+                         
+                        </div>
+                        <span [class]="'product-badge status-' + product.inventoryStatus">{{product.inventoryStatus}}</span>
+                    </div>
+                    <div class="product-grid-item-content">
+                        <img [routerLink]="['/product', product.product_id]" style="height: 150px; width: 100%; object-fit: contain; " [src]="product.img_url" [alt]="product.name" />
+                        <div class="product-name" [routerLink]="['/product', product.product_id]">{{product.name}}</div>
+                        <div class="product-description">{{product.description | slice:0:80 }}...</div>
+                        <!-- <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating> -->
                     </div>
                     <div class="product-grid-item-bottom">
-                        <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.id)"></p-button>
-                        <p-button icon="pi pi-pencil" (click)="showUpdateForm(product)"></p-button>
-                        <p-button icon="pi pi-trash" (click)="deleteProduct(product.id)"></p-button>
+                        <span class="product-price">${{product.price}}</span>
+                        <p-button *ngIf="admin" icon="pi pi-pencil" (click)="showUpdateForm(product)" [style]="{'margin-left': '.5em'}">
+                        </p-button>
+                        <p-button icon="pi pi-shopping-cart" (click)="addToCart(product.product_id, product.name)" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>
+                    
                     </div>
                 </div>
             </div>
         </ng-template>
     </p-dataView>
 </div>
-
-<p-dialog header={{messageTitle}} [(visible)]="createProductModel" [style]="{width: '50vw'}" [modal]="true"
-    [baseZIndex]="10000">
-    <p>{{message}}</p>
-    <button pButton type="button" (click)="goToCard()" label="Go to Cart"
-    class="p-button-help"></button>
-</p-dialog>
-
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>

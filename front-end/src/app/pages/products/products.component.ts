@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from './services/product.service';
-import { Message } from 'primeng/api';
+import { MenuItem, Message, MessageService, SelectItem } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  constructor(private confirmationService: ConfirmationService, private productService: ProductService,  private router: Router) { }
+  constructor(private confirmationService: ConfirmationService, 
+    private productService: ProductService,  private router: Router,
+    private messageService: MessageService
+    ) { }
 
   // name = new FormControl("", [Validators.required]);
   // description = new FormControl("", [Validators.required]);
@@ -22,9 +25,12 @@ export class ProductsComponent implements OnInit {
   productForm = new FormGroup({
     name: new FormControl("", [Validators.required]),
     description: new FormControl("", [Validators.required]),
+    imgUrl: new FormControl("111"),
+
     price: new FormControl("", [Validators.required]),
     quantity: new FormControl("", [Validators.required]),
-    id: new FormControl("", [Validators.required])
+    product_id: new FormControl("", [Validators.required])
+
   }); 
 
 
@@ -39,8 +45,24 @@ export class ProductsComponent implements OnInit {
   messageTitle: any
   message: any
   showCardButton: boolean
+  sortOptions: SelectItem[];
+  sortField: string;
+  sortOrder: number;
+  items: MenuItem[];
+  user:any
+  admin:boolean
+
+
   ngOnInit() {
+    
+    this.getUser()
     this.getAllProduct()
+    this.productButton()
+    this.sortOptions = [
+      {label: 'Price High to Low', value: '!price'},
+      {label: 'Price Low to High', value: 'price'}
+  ];
+
   }
 
   wait(sec) {
@@ -51,6 +73,13 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  getUser(){
+    if(window.localStorage.getItem('User')){
+    this.user = JSON.parse(window.localStorage.getItem('User'))
+    this.admin = this.user.admin
+  }
+  }
+
   showForm() {
     this.updateProductForm = false
     this.showProductForm = true
@@ -58,7 +87,9 @@ export class ProductsComponent implements OnInit {
     this.productForm.get('description').setValue('')
     this.productForm.get('price').setValue('')
     this.productForm.get('quantity').setValue('')
-    this.productForm.get('id').setValue('')
+    this.productForm.get('product_id').setValue('')
+    this.productForm.get('imgUrl').setValue('')
+
   }
 
   showUpdateForm(p){
@@ -69,7 +100,9 @@ export class ProductsComponent implements OnInit {
     this.productForm.get('description').setValue(this.product.description)
     this.productForm.get('price').setValue(this.product.price)
     this.productForm.get('quantity').setValue(this.product.quantity)
-    this.productForm.get('id').setValue(this.product.id)
+    this.productForm.get('imgUrl').setValue(this.product.img_url)
+    this.productForm.get('product_id').setValue(this.product.product_id)
+
   }
 
   messageModel(title, mess) {
@@ -80,15 +113,27 @@ export class ProductsComponent implements OnInit {
 
   }
 
-  addToCart(productId){
+  productDetails(id){
+    console.log(id)
+    this.router.navigate[`product/${id}`]
+  }
+
+  addToCart(productId, productName){
     let data = JSON.parse(window.localStorage.getItem('User'))
-    this.productService.addToCart(productId, data.id).subscribe(() => {
+    console.log(data.id)
+    if(!window.localStorage.getItem('User')){
+      this.router.navigate(['login'])
+    }
+    let quantity = 1
+    //get cart info
+    //if priduct id exit->update quentity
+    //else insert new table
+    this.productService.addToCart(productId, data.id, quantity).subscribe(() => {
       this.wait(1)
-      this.messageModel("success", "success")
+      this.messageModel(`Success`, `${productName} is successfully added to the cart.`)
       this.ngOnInit()
       this.showProductForm = false
       this.showCardButton =false
-
     },
     (error) => {
       this.wait(1)
@@ -99,6 +144,7 @@ export class ProductsComponent implements OnInit {
   getAllProduct() {
     this.productService.getProducts().subscribe((data) => {
       this.products = data
+      console.log(this.products)
     },
     (error) => {
       this.messageModel(error.name, error.statusText)
@@ -106,12 +152,39 @@ export class ProductsComponent implements OnInit {
   }
 
   goToCard(){
-
     this.router.navigate(['/cart'])
   }
 
+  productButton(){
+    this.items = [
+      {
+          icon: 'pi pi-pencil',
+          command: (e) => {
+                       console.log(e)
+
+              // this.messageService.add({ severity: 'info', summary: 'Add', detail: 'Data Added' });
+          }
+      },
+     
+      {
+          icon: 'pi pi-trash',
+          command: () => {
+            this.showUpdateForm(this.product)
+              this.messageService.add({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
+          }
+      }
+  ];
+  }
+
   addProduct() {
-    this.productService.createProduct(this.productForm.get('name').value, this.productForm.get('description').value, this.productForm.get('price').value, this.productForm.get('quantity').value).subscribe(() => {
+    this.productService.createProduct(
+      this.productForm.get('name').value, 
+      this.productForm.get('description').value, 
+      this.productForm.get('imgUrl').value, 
+
+      this.productForm.get('price').value, 
+
+      this.productForm.get('quantity').value).subscribe(() => {
       this.wait(1)
       this.messageModel("success", "success")
       this.ngOnInit()
@@ -150,7 +223,14 @@ export class ProductsComponent implements OnInit {
   }
 
   updateProduct() {
-    this.productService.updateProduct(this.productForm.get('name').value, this.productForm.get('description').value, this.productForm.get('price').value, this.productForm.get('quantity').value, this.productForm.get('id').value).subscribe(data => {
+    this.productService.updateProduct(
+      this.productForm.get('name').value, 
+      this.productForm.get('description').value, 
+      this.productForm.get('imgUrl').value,
+      this.productForm.get('price').value, 
+      this.productForm.get('quantity').value, 
+      this.productForm.get('product_id').value
+      ).subscribe(data => {
       if (data) {
         this.getAllProduct(),
           this.showProductForm = false
@@ -159,4 +239,18 @@ export class ProductsComponent implements OnInit {
       }
     })
   }
+
+  onSortChange(event) {
+    let value = event.value;
+
+    if (value.indexOf('!') === 0) {
+        this.sortOrder = -1;
+        this.sortField = value.substring(1, value.length);
+    }
+    else {
+        this.sortOrder = 1;
+        this.sortField = value;
+    }
+}
+
 }
